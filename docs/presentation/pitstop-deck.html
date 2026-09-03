@@ -203,8 +203,9 @@
   .eq{display:grid;grid-template-columns:130px 1fr auto;align-items:baseline;gap:22px;padding:16px 0;border-bottom:1px solid var(--line)}
   .eq .lhs{font-family:var(--mono);font-size:24px;color:var(--cyan)}
   .eq .rhs{font-family:var(--mono);font-size:20px;color:var(--fg)}
-  .eq .rhs sub{font-size:.68em}
+  .eq .rhs sub,.eq .rhs sup{font-size:.68em}
   .eq .kk{font-family:var(--mono);font-size:13px;color:var(--amber);text-align:right;white-space:nowrap}
+  .eq .kk sub,.eq .kk sup{font-size:.75em}
   .eq .kk span{color:var(--fg-dim)}
   #s10 .mono-note{margin-top:18px}
 
@@ -766,9 +767,9 @@
       <div class="eyebrow">// Modeling: three physics-informed virtual sensors</div>
       <h2 class="head sm">The car has no wear or fuel sensor. We built them.</h2>
       <div class="eqs">
-        <div class="eq step" data-s="1"><span class="lhs">W<sub>tire</sub></span><span class="rhs">= ∫ k<sub>tire</sub> · Speed² · SteeringAngle  dt</span><span class="kk">k<sub>tire</sub> = 3.5 × 10⁻⁴ <span>· hand-tuned</span></span></div>
+        <div class="eq step" data-s="1"><span class="lhs">W<sub>tire</sub></span><span class="rhs">= ∫ k<sub>tire</sub> · Speed<sup>2</sup> · SteeringAngle  dt</span><span class="kk">k<sub>tire</sub> = 3.5 × 10<sup>-4</sup> <span>· hand-tuned</span></span></div>
         <div class="eq step" data-s="2"><span class="lhs">F<sub>cons</sub></span><span class="rhs">= ∫ k<sub>fuel</sub> · Throttle%  dt</span><span class="kk">k<sub>fuel</sub> = 0.15 %/s <span>· per 100% throttle</span></span></div>
-        <div class="eq step" data-s="3"><span class="lhs">Q</span><span class="rhs">= A · Iⁿ &nbsp;&nbsp;<span style="color:var(--fg-dim)">(Peukert)</span></span><span class="kk">A ≈ 0.85 Ah,  n ≈ 1.05 <span>· fitted</span></span></div>
+        <div class="eq step" data-s="3"><span class="lhs">Q</span><span class="rhs">= A · I<sup>n</sup> &nbsp;&nbsp;<span style="color:var(--fg-dim)">(Peukert)</span></span><span class="kk">A ≈ 0.85 Ah,  n ≈ 1.05 <span>· fitted</span></span></div>
       </div>
       <div class="mono-note step" data-s="4">Inputs are the vehicle's <b>own commanded speed, steering and throttle</b>, integrated over time, quantities it can already measure directly.</div>
     </section>
