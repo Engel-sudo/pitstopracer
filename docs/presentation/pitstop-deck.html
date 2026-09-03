@@ -1,3 +1,4 @@
+<meta charset="utf-8">
 <title>Pit-Stop Racer Pro</title>
 <meta name="description" content="CPS course presentation — autonomous racing with multi-objective mission planning on an NVIDIA JetRacer.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -115,6 +116,14 @@
   .arow .phys{font-size:15px;line-height:1.45;color:var(--fg-mid)}
   .arow .phys em{color:var(--amber);font-style:normal;font-weight:500}
   #s4 .kicker{margin-top:22px}
+
+  /* video cold-open (slide 3) */
+  #svid{padding:0;background:#000}
+  #svid .vfill{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;background:#000;z-index:1;display:block}
+  #svid .vcap{position:absolute;left:84px;bottom:70px;z-index:3}
+  #svid .vcap .eyebrow{margin-bottom:6px;text-shadow:0 2px 14px rgba(0,0,0,.85)}
+  #svid .vsrc{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--fg-mid);text-shadow:0 2px 14px rgba(0,0,0,.95)}
+  #svid .vhint{position:absolute;right:84px;bottom:70px;z-index:3;font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--fg-dim);text-shadow:0 2px 14px rgba(0,0,0,.95)}
 
   /* slide 5 : the machine */
   .machine{display:grid;grid-template-columns:1.05fr .95fr;gap:30px;flex:1;align-items:center;margin-top:4px}
@@ -366,7 +375,17 @@
       <svg class="flag step" data-s="2" viewBox="0 0 120 120" aria-hidden="true"><use href="#flag"/></svg>
     </section>
 
-    <!-- 3 : FOUR BUDGETS -->
+    <!-- 3 : REAL RACING (VIDEO) -->
+    <section class="slide" id="svid" data-steps="1" data-section="Real racing">
+      <video class="vfill" id="vid-monza" src="monza-start.mp4" playsinline preload="auto" controls></video>
+      <div class="vcap">
+        <div class="eyebrow">// Monza &mdash; the strategy is the race</div>
+        <div class="vsrc">2020 Italian Grand Prix &middot; Formula 1</div>
+      </div>
+      <div class="vhint">&rarr; to continue</div>
+    </section>
+
+    <!-- 4 : FOUR BUDGETS -->
     <section class="slide" id="s3" data-steps="3" data-section="The problem">
       <div class="eyebrow">// The problem — three coupled resources, one clock</div>
       <h2 class="head">Speed costs everything else</h2>
@@ -380,7 +399,7 @@
       <div class="payoff step" data-s="3"><span class="ar">→</span> the planner weighs all three to finish in the shortest total time</div>
     </section>
 
-    <!-- 4 : SIM REWRITES DRIVING -->
+    <!-- 5 : SIM REWRITES DRIVING -->
     <section class="slide" id="s4" data-steps="4" data-section="The A+ criterion">
       <div class="eyebrow amber">// Why this is a cyber-physical system, not a dashboard</div>
       <h2 class="head sm">Each virtual sensor changes what the car can do</h2>
@@ -401,7 +420,7 @@
       <div class="kicker step" data-s="4">A virtual sensor is only convincing when it changes vehicle behaviour — not just a dashboard number.</div>
     </section>
 
-    <!-- 5 : THE MACHINE -->
+    <!-- 6 : THE MACHINE -->
     <section class="slide" id="s5" data-steps="1" data-section="The machine">
       <div class="eyebrow">// The vehicle — NVIDIA JetRacer AI Kit</div>
       <h2 class="head sm">An off-the-shelf line-follower, extended</h2>
@@ -419,7 +438,7 @@
       <div class="mono-note cap">Perception, the state machine and the physics simulation all run <b>onboard</b> — no inference offloaded to an external server.</div>
     </section>
 
-    <!-- 6 : CONTROL LOOP -->
+    <!-- 7 : CONTROL LOOP -->
     <section class="slide" id="s6" data-steps="4" data-section="Design">
       <div class="brackets"><span class="tl"></span><span class="tr"></span><span class="bl"></span><span class="br"></span></div>
       <div class="ghost-num">01</div>
@@ -446,7 +465,7 @@
       </div>
     </section>
 
-    <!-- 7 : OWNERSHIP -->
+    <!-- 8 : OWNERSHIP -->
     <section class="slide" id="s7" data-steps="4" data-section="Design">
       <div class="eyebrow">// Seven engineers, three pillars</div>
       <h2 class="head sm">Who owns what</h2>
@@ -470,7 +489,7 @@
       <div class="packet-chip step" data-s="4">Pro-Racing Packet <span>· SoC + 4× tire + fuel + strategy · WebSocket · &lt; 100 ms</span></div>
     </section>
 
-    <!-- 8 : TWIN GEOMETRY -->
+    <!-- 9 : TWIN GEOMETRY -->
     <section class="slide" id="s8" data-steps="3" data-section="The track">
       <div class="brackets"><span class="tl"></span><span class="tr"></span><span class="bl"></span><span class="br"></span></div>
       <div class="ghost-num">02</div>
@@ -486,7 +505,7 @@
       </div>
     </section>
 
-    <!-- 9 : DRAWING TO GEOMETRY -->
+    <!-- 10 : DRAWING TO GEOMETRY -->
     <section class="slide" id="s9" data-steps="3" data-section="The track">
       <div class="eyebrow">// tools/extract_track.py</div>
       <h2 class="head sm">From drawing to geometry — and it checks itself</h2>
@@ -506,7 +525,7 @@
       </div>
     </section>
 
-    <!-- 10 : EQUATIONS -->
+    <!-- 11 : EQUATIONS -->
     <section class="slide" id="s10" data-steps="4" data-section="Modeling">
       <div class="brackets"><span class="tl"></span><span class="tr"></span><span class="bl"></span><span class="br"></span></div>
       <div class="ghost-num">03</div>
@@ -520,7 +539,7 @@
       <div class="mono-note step" data-s="4">Inputs are the vehicle's <b>own commanded speed, steering and throttle</b>, integrated over time — quantities it can already measure directly.</div>
     </section>
 
-    <!-- 11 : PEUKERT -->
+    <!-- 12 : PEUKERT -->
     <section class="slide" id="s11" data-steps="3" data-section="Modeling">
       <div class="eyebrow">// Results — the battery sensor is the one that's real</div>
       <h2 class="head sm">From measured current to a physical stop</h2>
@@ -540,7 +559,7 @@
       <div class="kicker step" data-s="3">Exercised end to end on the car. Four points on one pack — a first estimate, not a settled value.</div>
     </section>
 
-    <!-- 12 : PIT DECISION -->
+    <!-- 13 : PIT DECISION -->
     <section class="slide" id="s12" data-steps="5" data-section="Modeling">
       <div class="eyebrow">// The Racing ↔ Pit-Stop finite-state machine</div>
       <h2 class="head sm">When to come in</h2>
@@ -557,7 +576,7 @@
       <div class="planner step" data-s="5">The <b>mission planner</b> compares laps-remaining under each resource and pits when any hits zero — but will defer a lower-priority stop by one or two laps to coincide with a battery-driven service, the way full-scale F1 strategy couples tire, energy and pit timing.</div>
     </section>
 
-    <!-- 13 : RAIN -->
+    <!-- 14 : RAIN -->
     <section class="slide" id="s13" data-steps="4" data-section="Modeling">
       <div class="eyebrow amber">// Rain simulation — weather-adaptive tire strategy</div>
       <h2 class="head sm">A humidity ramp forces a compound change</h2>
@@ -571,7 +590,7 @@
       </div>
     </section>
 
-    <!-- 14 : UNCERTAINTY -->
+    <!-- 15 : UNCERTAINTY -->
     <section class="slide" id="s14" data-steps="4" data-section="Modeling">
       <div class="eyebrow">// The system knows what it doesn't know</div>
       <h2 class="head sm">Honest about position</h2>
@@ -587,7 +606,7 @@
       </div>
     </section>
 
-    <!-- 15 : ANALYSIS -->
+    <!-- 16 : ANALYSIS -->
     <section class="slide" id="s15" data-steps="3" data-section="Analysis">
       <div class="brackets"><span class="tl"></span><span class="tr"></span><span class="bl"></span><span class="br"></span></div>
       <div class="ghost-num">04</div>
@@ -614,7 +633,7 @@
       <div class="mono-note cav step" data-s="3">Latency is per-stage timing observed during development — an order-of-magnitude budget, not one continuous instrumented benchmark.</div>
     </section>
 
-    <!-- 16 : DEMO -->
+    <!-- 17 : DEMO -->
     <section class="slide" id="s16" data-steps="1" data-section="Demo">
       <div class="eyebrow" style="align-self:center">// Demo</div>
       <div class="demoframe">
@@ -625,7 +644,7 @@
       <div class="demo-cap">full lap  ·  pit trigger fires  ·  three-phase pit sequence  ·  rejoin</div>
     </section>
 
-    <!-- 17 : COMMAND CENTER -->
+    <!-- 18 : COMMAND CENTER -->
     <section class="slide" id="s17" data-steps="4" data-section="Demo">
       <div class="eyebrow">// The Pit Crew Command Center</div>
       <h2 class="head sm">One glance: where the car is, and what it has left</h2>
@@ -648,7 +667,7 @@
       </div>
     </section>
 
-    <!-- 18 : REAL VS SIM -->
+    <!-- 19 : REAL VS SIM -->
     <section class="slide" id="s18" data-steps="3" data-section="Results">
       <div class="eyebrow">// Honest limits — implemented vs. specified</div>
       <h2 class="head sm">What's real, what's simulated</h2>
@@ -676,7 +695,7 @@
       </div>
     </section>
 
-    <!-- 19 : CLOSE -->
+    <!-- 20 : CLOSE -->
     <section class="slide" id="s19" data-steps="3" data-section="Close">
       <div class="brackets"><span class="tl"></span><span class="tr"></span><span class="bl"></span><span class="br"></span></div>
       <div class="eyebrow">// Contributions</div>
@@ -699,7 +718,7 @@
     <div class="footer">
       <span class="mark"><b>PIT-STOP RACER PRO</b></span>
       <span id="f-section">Cold open</span>
-      <span id="f-count">01 · 19</span>
+      <span id="f-count">01 · 20</span>
     </div>
     <div class="sector" id="sector"><i></i><i></i><i></i></div>
   </div>
@@ -745,23 +764,24 @@
   var SCRIPT = {
     1:["Cold open — start lights, then the title.","One line: everyone knows a pit stop. We made the cyber side own that decision, on a low-cost JetRacer. Autonomous racing that manages energy, fuel and tires instead of pretending they're infinite."],
     2:["The premise.","Small autonomous racers usually treat the car as if its resources were unlimited. Real racing series never do — strategy is dominated by when to sacrifice track position to service the car."],
-    3:["Speed costs everything else.","Speed is the one lever. Tire wear, fuel and battery are what it spends. They're coupled — and the planner's job is the shortest total race time across all three, including the question of when to pit."],
-    4:["The A+ criterion — cyber changes physical.","Each virtual sensor has a physical consequence. Battery below the 6.4-volt cutoff halts the car. Worn tires cut the steering limit and top speed. A lighter fuel load raises the acceleration limit. Not a readout — a behaviour change."],
-    5:["The machine — NVIDIA JetRacer AI Kit.","Jetson Nano, about 472 GFLOPS in 5 to 10 watts. IMX219 camera for perception. INA219 for the battery sensor. TB6612 H-bridge to servo and motor. 2S 850 mAh LiPo. Everything runs onboard."],
-    6:["Design — the closed loop.","Say 'design'. Sensing is the car's own speed, steering, throttle plus camera. Simulation runs the three virtual sensors. Decision is thresholds plus the planner. Feedback tightens the control limits; Action is the autonomous pit."],
-    7:["Ownership.","Three pillars, seven people. Everything meets at the Pro-Racing Packet — state of charge, four-corner tire health, fuel, strategy — over WebSocket, under 100 ms."],
-    8:["The twin needs geometry it can reason about.","Rather than digitise a track by hand, we drew a Monza-style layout as a 1:1 vector. The twin renders geometry derived from that drawing."],
-    9:["From drawing to geometry — and it checks itself.","extract_track.py selects paths by stroke signature, not position, so a redraw still works. 627 points, 22.01 m closed loop. The generated file carries verification bounds — a redraw that shifts the lap length past 1.5 m fails the build."],
-    10:["Three virtual sensors.","Tire wear integrates speed squared times steering angle, k = 3.5e-4. Fuel integrates throttle, k = 0.15 percent per second. Battery is the Peukert relation, Q = A times I to the n, fitted to A = 0.85, n = 1.05. All inputs are quantities the car already measures."],
-    11:["The battery sensor is the real one.","Four constant-current discharge runs on one 2S pack. Fit the Peukert constants, stop the car when simulated voltage hits 6.4 volts. Exercised end to end. Be honest: four points, one pack, a first estimate."],
-    12:["The state machine.","Three states: RACING, PIT_ENTRY_AND_SERVICE, PIT_EXIT. Enter on low battery, a detected green marker, or a planner decision. Exit back to RACING when the car re-converges on the track boundary. Obstacle detection is separate and overrides everything. The planner will defer a minor stop to line it up with a battery stop — F1 strategy, scaled down."],
-    13:["Rain changes the compound.","A scripted humidity ramp stands in for a wet track. The grip ceiling interpolates between dry and wet friction values from the literature. Below a threshold, a pit is forced and the tire model resets to a wet compound."],
-    14:["Honest about position.","Position is estimated from lap progress; we say so on screen and flip a badge to 'measured' if real localization ever exists. Pit-lane steering is a classical PID on the blue line; racing uses the learned net."],
-    15:["Does it hold up.","Latency budget: camera 15, inference 25, decision 5, transmit 35 — about 80 ms against a 100 ms target. Pit stops land near the 10-second design target on stopwatch timing. The 25 percent tire and 15 percent fuel floors leave one to two laps of margin. Caveat: the latency is a per-stage estimate, not one instrumented run."],
-    16:["Demo.","Switch to the recording. Narrate: a full lap, the pit trigger, the three-phase pit sequence, the rejoin. Placeholder shows the live twin until footage lands."],
-    17:["The Command Center.","One glance: position on the real track, four-corner tire health, fuel and projected range, the Strategy Predictor counting down. Record and replay means this can't be broken by a missing producer."],
-    18:["What's real, what's simulated.","Implemented and tested on the car: the battery sensor, the state machine, the obstacle safety layer, self-trained perception. Specified but not yet integrated: tire and fuel sensors, the mission planner. Rain-sim is a scripted ramp. Next steps are bench calibration and integration."],
-    19:["Close.","Seven contributions, one line each. The closing line from the report: the fastest lap is not achieved by ignoring the health of the machine, but by managing it. Repo, then questions."]
+    3:["Real racing — the Monza start.","Fifteen seconds of the 2020 Italian Grand Prix: twenty cars into the first chicane at Monza, the layout our foam track copies. Every team on that grid is already running the trade-off we automate — push now versus pay later. Let it breathe, then cut to the problem."],
+    4:["Speed costs everything else.","Speed is the one lever. Tire wear, fuel and battery are what it spends. They're coupled — and the planner's job is the shortest total race time across all three, including the question of when to pit."],
+    5:["The A+ criterion — cyber changes physical.","Each virtual sensor has a physical consequence. Battery below the 6.4-volt cutoff halts the car. Worn tires cut the steering limit and top speed. A lighter fuel load raises the acceleration limit. Not a readout — a behaviour change."],
+    6:["The machine — NVIDIA JetRacer AI Kit.","Jetson Nano, about 472 GFLOPS in 5 to 10 watts. IMX219 camera for perception. INA219 for the battery sensor. TB6612 H-bridge to servo and motor. 2S 850 mAh LiPo. Everything runs onboard."],
+    7:["Design — the closed loop.","Say 'design'. Sensing is the car's own speed, steering, throttle plus camera. Simulation runs the three virtual sensors. Decision is thresholds plus the planner. Feedback tightens the control limits; Action is the autonomous pit."],
+    8:["Ownership.","Three pillars, seven people. Everything meets at the Pro-Racing Packet — state of charge, four-corner tire health, fuel, strategy — over WebSocket, under 100 ms."],
+    9:["The twin needs geometry it can reason about.","Rather than digitise a track by hand, we drew a Monza-style layout as a 1:1 vector. The twin renders geometry derived from that drawing."],
+    10:["From drawing to geometry — and it checks itself.","extract_track.py selects paths by stroke signature, not position, so a redraw still works. 627 points, 22.01 m closed loop. The generated file carries verification bounds — a redraw that shifts the lap length past 1.5 m fails the build."],
+    11:["Three virtual sensors.","Tire wear integrates speed squared times steering angle, k = 3.5e-4. Fuel integrates throttle, k = 0.15 percent per second. Battery is the Peukert relation, Q = A times I to the n, fitted to A = 0.85, n = 1.05. All inputs are quantities the car already measures."],
+    12:["The battery sensor is the real one.","Four constant-current discharge runs on one 2S pack. Fit the Peukert constants, stop the car when simulated voltage hits 6.4 volts. Exercised end to end. Be honest: four points, one pack, a first estimate."],
+    13:["The state machine.","Three states: RACING, PIT_ENTRY_AND_SERVICE, PIT_EXIT. Enter on low battery, a detected green marker, or a planner decision. Exit back to RACING when the car re-converges on the track boundary. Obstacle detection is separate and overrides everything. The planner will defer a minor stop to line it up with a battery stop — F1 strategy, scaled down."],
+    14:["Rain changes the compound.","A scripted humidity ramp stands in for a wet track. The grip ceiling interpolates between dry and wet friction values from the literature. Below a threshold, a pit is forced and the tire model resets to a wet compound."],
+    15:["Honest about position.","Position is estimated from lap progress; we say so on screen and flip a badge to 'measured' if real localization ever exists. Pit-lane steering is a classical PID on the blue line; racing uses the learned net."],
+    16:["Does it hold up.","Latency budget: camera 15, inference 25, decision 5, transmit 35 — about 80 ms against a 100 ms target. Pit stops land near the 10-second design target on stopwatch timing. The 25 percent tire and 15 percent fuel floors leave one to two laps of margin. Caveat: the latency is a per-stage estimate, not one instrumented run."],
+    17:["Demo.","Switch to the recording. Narrate: a full lap, the pit trigger, the three-phase pit sequence, the rejoin. Placeholder shows the live twin until footage lands."],
+    18:["The Command Center.","One glance: position on the real track, four-corner tire health, fuel and projected range, the Strategy Predictor counting down. Record and replay means this can't be broken by a missing producer."],
+    19:["What's real, what's simulated.","Implemented and tested on the car: the battery sensor, the state machine, the obstacle safety layer, self-trained perception. Specified but not yet integrated: tire and fuel sensors, the mission planner. Rain-sim is a scripted ramp. Next steps are bench calibration and integration."],
+    20:["Close.","Seven contributions, one line each. The closing line from the report: the fastest lap is not achieved by ignoring the health of the machine, but by managing it. Repo, then questions."]
   };
 
   var stage=document.getElementById('stage');
@@ -912,6 +932,7 @@
   function onEnter(i){
     var id=slides[i].id;
     if(id==='s1') coldOpen();
+    if(id==='svid'){ var mv=document.getElementById('vid-monza'); if(mv){ try{mv.currentTime=0;}catch(e){} var pp=mv.play(); if(pp&&pp.catch) pp.catch(function(){}); } }
     if(id==='s6'){ setTimeout(function(){ document.getElementById('loop6').classList.add('drawn'); animLoopDot(); },120); }
     if(id==='s8'){ setTimeout(function(){ trk8.classList.add('drawn'); },160); }
     if(id==='s11' && !chartsDone.peu){ peukertChart(document.getElementById('peuchart')); chartsDone.peu=1; }
@@ -921,6 +942,7 @@
   }
   function onLeave(i){
     var id=slides[i].id;
+    if(id==='svid'){ var mv=document.getElementById('vid-monza'); if(mv) mv.pause(); }
     if(id==='s17' && runners.s17) runners.s17.stop();
     if(id==='s16' && runners.s16) runners.s16.stop();
   }
@@ -945,11 +967,11 @@
   function next(){ if(step<maxStep()){ step++; renderSteps(); updateChrome(); return; } if(cur<N-1) go(cur+1); }
   function prev(){ if(step>0){ step--; renderSteps(); return; } if(cur>0){ go(cur-1); step=maxStep(); renderSteps(); updateChrome(); } }
 
-  var acts=[{n:'The race',a:1,b:4},{n:'The system',a:5,b:15},{n:'The result',a:16,b:19}];
+  var acts=[{n:'The race',a:1,b:5},{n:'The system',a:6,b:16},{n:'The result',a:17,b:20}];
   function updateChrome(){
     var human=cur+1;
     document.getElementById('f-section').textContent=slides[cur].dataset.section;
-    document.getElementById('f-count').textContent=(human<10?'0':'')+human+' · 19';
+    document.getElementById('f-count').textContent=(human<10?'0':'')+human+' · 20';
     var segs=document.querySelectorAll('#sector i');
     acts.forEach(function(ac,k){
       var seg=segs[k];
@@ -981,7 +1003,7 @@
     else if(e.key.toLowerCase()==='o'){ ov.classList.toggle('on'); }
     else if(e.key==='Escape'){ ov.classList.remove('on'); }
   });
-  stage.addEventListener('click',function(e){ var x=e.clientX/window.innerWidth; if(x>0.62) next(); else if(x<0.32) prev(); });
+  stage.addEventListener('click',function(e){ if(e.target.closest&&e.target.closest('video')) return; var x=e.clientX/window.innerWidth; if(x>0.62) next(); else if(x<0.32) prev(); });
 
   var start=parseInt(location.hash.replace('#',''),10);
   cur=(start>=1&&start<=N)?start-1:0;
