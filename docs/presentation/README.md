@@ -1,9 +1,14 @@
 # Presentation deck
 
 `pitstop-deck.html`: the course presentation for Pit-Stop Racer Pro.
-Single self-contained HTML file: 29 slides, dark "Pit Wall" F1-telemetry style.
-Slide 4 plays `monza-start.mp4` (a 17 s F1 race-start clip); keep that file next
+Single self-contained HTML file: **18 slides + 4 backup slides**, dark "Pit Wall"
+F1-telemetry style, built as one 15-minute story.
+Slide 3 plays `monza-start.mp4` (a 17 s F1 race-start clip); keep that file next
 to the HTML. Everything else is embedded.
+
+`pitstop-deck-v1.html` is the previous 29-slide deck. It is **not** dead weight:
+the build script reads the shared design system, the JetRacer photos, the track
+geometry and the grip chart out of it. Do not delete it.
 
 ## Opening / presenting
 
@@ -16,70 +21,96 @@ No build step, no server.
 | `←` / `PageUp` | back |
 | `S` | toggle the speaker script (talking points per slide) |
 | `O` | slide overview grid, click any slide to jump |
+| `T` | rehearsal timer (slide elapsed, total, 14:52 target, over-by) |
 | `F` | fullscreen |
 | `Home` / `End` | first / last slide |
 
 Clicking the right / left third of the screen also navigates. The URL hash
 (`#7`) tracks the current slide, so you can deep-link or reload in place.
 
+## The story
+
+Three acts, one question: *the car is fast, but how long can it stay out?*
+
+| # | slide | act | steps |
+|---|---|---|---|
+| 1 | Title | — | 0 |
+| 2 | The premise: the best-managed car wins | — | 2 |
+| 3 | Monza race start (video) | — | 1 |
+| 4 | Three clocks: battery, tires, fuel | — | 3 |
+| 5 | Anatomy (JetRacer hardware) | — | 6 |
+| 6 | Perception: steering, people, markers | — | 4 |
+| 7 | **Act I card: Battery** | I | 1 |
+| 8 | How many laps are left in the pack? | I | 5 |
+| 9 | The verdict: 35 < 37 → BOX | I | 4 |
+| 10 | **Act II card: Tires** | II | 1 |
+| 11 | Tires: wear you cannot measure | II | 3 |
+| 12 | Rain: a phone changes the speed limit | II | 4 |
+| 13 | **Act III card: Fuel** | III | 1 |
+| 14 | Fuel: the see-saw | III | 3 |
+| 15 | The call: one car, three deadlines, one pit lane | III | 6 |
+| 16 | Telemetry: the car races, the phone watches | III | 5 |
+| 17 | Race sim: one lap with everything on | — | 1 |
+| 18 | What's built, and where this grows next + close | — | 3 |
+
+Backup slides `b01`–`b04` sit after slide 18. Arrow navigation **skips** them;
+they only appear in the `O` overview (dimmed, tagged `BACKUP`) so you can jump
+to one during Q&A.
+
+## Global mechanics
+
+- **HUD** (top right): one number per slide, laps left, FPS, max throttle,
+  latency. It morphs when the story changes it and counts digits when it is
+  numeric.
+- **Clock rail** (above the footer): three live bars, BATTERY / TIRES / FUEL,
+  draining in wall-clock time from slide 4 onward. Battery is forced to `0.0`
+  when you reach slide 15, which is what makes the pit call unavoidable.
+- Both are idempotent: jumping straight to `#15` lands in the right state.
+- **Speaker split** (4 voices) is in the `S` script per slide.
+
 ## What's in it
 
-- Content is grounded in the **final report** (`Pit_Stop_Racer_Pro.pdf`) and the
-  extracted track geometry (`app/src/track/monza.generated.ts`).
-- The track on slides 10, 18, 19, 26 and 29 is rendered live from the real 627-point
-  centreline, the same data the digital twin uses.
-- Slide 4 is a full-bleed `<video>` (`monza-start.mp4`, with sound). It auto-plays
-  on entry and pauses on leave; if the browser blocks autoplay-with-audio, the
-  presenter clicks play (controls are shown). Source: 2020 Italian GP, Formula 1.
-- The JetRacer photo and all three charts (Peukert discharge, latency budget,
-  grip vs. humidity) are embedded, so nothing loads from disk.
+- Content follows the partner's **General Summary** (the as-built system); the
+  report is only used where the summary is silent.
+- The track on slides 15, 17 and the backups is rendered live from the real
+  627-point Monza centreline (`app/src/track/monza.generated.ts`).
+- Slide 3 is a full-bleed `<video>` with sound. It auto-plays on entry and pauses
+  on leave; if the browser blocks autoplay-with-audio, click play (controls are
+  shown). Source: 2020 Italian GP, Formula 1.
+- Tire and fuel models are shown in plain English with a permanent amber
+  `SIMULATED · HAND-TUNED` badge; the latency figure carries
+  `ESTIMATE · PER STAGE, NOT END-TO-END`. The maths stays in the report.
 - Fonts (Chakra Petch, IBM Plex Mono, Inter) load from Google Fonts, so the
   first render needs a network connection. Load it once before presenting and
   keep the tab open.
-- Slides 1 to 21 are the core narrative. Slides 22 to 29 are the **showcase
-  act**, a product-film style walk through the hardware and the software:
-
-  | # | slide | what it does |
-  |---|---|---|
-  | 22 | The machine | vector JetRacer draws itself on entry, headline reveal |
-  | 23 | Anatomy | exploded view, six numbered callouts light up part by part |
-  | 24 | Detail | macro cards for the camera, the INA219 and the virtual sensors |
-  | 25 | Signal path | animated packets travelling the acquire to render pipeline |
-  | 26 | The app | Command Center mock with live gauges and a lapping car |
-  | 27 | Algorithms | the three resource clocks counting down to a pit verdict |
-  | 28 | Perception | the CNN backbone and its two heads |
-  | 29 | Race sim | a full lap with rain arriving, grip dropping and a real pit stop |
-
-  The showcase slides use `class="slide cine"`, which swaps the horizontal slide
-  transition for a scale plus blur cinematic one. They are self-contained: all of
-  their artwork is generated by the showcase block at the end of the `<script>`.
 
 ## Editing
 
-It's plain HTML/CSS/JS in one file:
+`pitstop-deck.html` is **generated**. Do not edit it directly, regenerate:
 
-- **Slide content**: each slide is a `<section class="slide" id="s1" …>`. Edit
-  the text directly. `data-steps="N"` on the section = how many click-reveals it
-  has; elements with `class="step" data-s="2"` appear on step 2.
-- **Speaker notes**: the `SCRIPT` object near the top of the `<script>`, keyed
-  by slide **position** (1-based), not by DOM id. Inserting a slide in the middle
-  means renumbering `SCRIPT`, the `acts` ranges and the slide comments, so prefer
-  appending.
-- **Showcase artwork**: `jrBody()` draws the car, `ANAT` holds the anatomy
-  callouts, `MACROS` the detail cards, and the `enterHooks` / `leaveHooks` /
-  `stepHooks` maps (keyed by DOM id) start and stop each animation.
-- **Visual system**: the CSS custom properties in `:root` (`--cyan`, `--amber`,
-  `--ink0`, the three font stacks). Change once, applies everywhere.
-- **Charts**: `peukertChart()`, `gripChart()` build inline SVG; the numbers are
-  in those functions.
-- **Track data**: the `TRACK` object at the top of the `<script>` is inlined
-  from `monza.generated.ts`.
+```
+cd docs/presentation && python3 _build/assemble.py
+```
+
+| file | holds |
+|---|---|
+| `_build/p1.html` | head, `/*__CSS__*/` token, new CSS part 1 (HUD, rail, act cards, slides 01–09) |
+| `_build/p2.html` | new CSS part 2 (slides 11–18, backups, timer), `</style>` |
+| `_build/p3.html` | all slide markup + chrome |
+| `_build/p4.js` | engine: `SCRIPT`, `HUD`, `RAIL`, `CHOREO`, hooks, nav, timer |
+| `_build/assemble.py` | splices the reused assets out of `pitstop-deck-v1.html` |
+
+Gotchas:
+
+- **Never give a new slide an id matching `s0`–`s27`.** The reused CSS block
+  still carries the old deck's per-slide rules and they will silently win. New
+  slides use the `p01`–`p18` / `b01`–`b04` prefix; `svid` is reused on purpose.
+- `SCRIPT` is keyed by slide **position** (1-based). Inserting a slide means
+  renumbering `SCRIPT`, `TARGET` and the `acts` ranges.
+- `data-steps="N"` on the section = click-reveals; `class="step" data-s="2"`
+  appears on step 2. `data-backup="1"` hides a slide from arrow navigation.
 
 ## Open items
 
-- Slide 1 (title / course context): the **supervisor** (`Prof. Dr. [name]`) and
-  **term** (`[semester / year]`) are placeholders, confirm and replace.
-- Slide 21: Fiona's contribution line is a placeholder, confirm and replace.
-- Slide 19: demo video slot, currently shows the live twin as a stand-in.
-- The showcase act repeats some points from the core deck on purpose. Trim
-  whichever version you do not want to present.
+- Chair / lab name for the title slide, if the course wants one.
+- Rehearse against the `T` timer: the per-slide targets sum to 14:52.
