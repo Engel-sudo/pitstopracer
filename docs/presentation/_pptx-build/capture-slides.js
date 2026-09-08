@@ -62,28 +62,37 @@ fs.mkdirSync(OUT_DIR, { recursive: true });
   async function cleanupOverlays() {
     await page.evaluate(() => { document.querySelectorAll('.__snap_overlay__').forEach(c => c.remove()); });
   }
-  async function isFinal() {
+  async function currentInfo() {
+    // mirrors the deck's own step bookkeeping: on arrival step=min(1,steps);
+    // some slides (e.g. the anatomy diagram on slide 6) reveal content purely
+    // via JS/canvas keyed off the step number, with no .step DOM markers, so
+    // we must not infer "final" from .step.shown — just count from data-steps.
     return await page.evaluate(() => {
       var s = document.querySelector('.slide.is-active');
-      if (!s) return true;
-      var need = +s.dataset.steps || 0;
-      if (need === 0) return true;
-      var steps = [].slice.call(s.querySelectorAll('.step'));
-      if (!steps.length) return true;
-      return steps.every(function (el) { return el.classList.contains('shown'); });
+      return { human: parseInt(location.hash.replace('#', '') || '1', 10), steps: s ? (+s.dataset.steps || 0) : 0 };
     });
-  }
-  async function currentHuman() {
-    return await page.evaluate(() => parseInt(location.hash.replace('#', '') || '1', 10));
   }
 
   const captured = new Set();
   let guard = 0;
-  while (captured.size < MAIN_SLIDES && guard < 400) {
+  let lastHuman = -1;
+  let stepCounter = 0;
+  while (captured.size < MAIN_SLIDES && guard < 500) {
     guard++;
-    const human = await currentHuman();
-    const final = await isFinal();
-    if (final && !captured.has(human) && human <= MAIN_SLIDES) {
+    const { human, steps } = await currentInfo();
+    if (human !== lastHuman) {
+      lastHuman = human;
+      stepCounter = steps > 0 ? 1 : 0;
+    }
+    if (stepCounter < steps) {
+      // more reveals to go on this slide before it's fully shown
+      stepCounter++;
+      await page.keyboard.press('ArrowRight');
+      await new Promise(r => setTimeout(r, 420));
+      continue;
+    }
+    // fully revealed: capture, then advance to the next slide
+    if (!captured.has(human) && human <= MAIN_SLIDES) {
       await primeVideos();
       const id = String(human).padStart(2, '0');
       await page.screenshot({ path: path.join(OUT_DIR, `slide-${id}.png`) });
@@ -92,7 +101,7 @@ fs.mkdirSync(OUT_DIR, { recursive: true });
       console.log('captured', human);
     }
     await page.keyboard.press('ArrowRight');
-    await new Promise(r => setTimeout(r, 380));
+    await new Promise(r => setTimeout(r, 420));
   }
 
   await browser.close();
