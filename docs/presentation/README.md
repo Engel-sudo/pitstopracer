@@ -8,10 +8,35 @@ F1-telemetry style, built as one ~15-minute story.
 read out loud, per slide, with speaker tags and stage cues). Regenerate it from
 the deck with the steps in "The script PDF" below.
 
+`pitstop-deck.pptx`: a downloadable PowerPoint version of the same 20 main
+slides, one slide per HTML slide (fully revealed, final step), each slide's
+`SCRIPT` entry embedded as its PowerPoint speaker notes, and a fast cross-fade
+transition on every slide to approximate the HTML deck's `.slide` transition
+(opacity + a small translateX, 0.34s ease). It has no click-through step
+reveals or live video/animation — it is a static, presentable snapshot for
+sharing/downloading, not a replacement for presenting from the HTML. Regenerate
+it after editing the deck with:
+
+```
+cd docs/presentation/_pptx-build
+npm install puppeteer-core   # once
+node capture-slides.js /tmp/pitstop-pptx-build
+pip3 install python-pptx     # once
+python3 build-pptx.py /tmp/pitstop-pptx-build
+```
+
+`capture-slides.js` drives a headless Chrome/Puppeteer session that steps
+through the deck exactly like a real viewer (the same arrow-key `next()`
+navigation), waits for each slide's `.step` reveals to finish, grabs each
+active video's live frame onto a canvas overlay so it isn't captured black,
+and screenshots the result at 2x scale. `build-pptx.py` lays one image per
+slide into a 16:9 deck and parses the `SCRIPT` object straight out of the HTML
+so the notes never drift from the on-screen script.
+
 Media that must sit next to the HTML:
 
-- `monza-start.mp4` — slide 3, a 17 s F1 race-start clip (2020 Italian GP), plays at 1.5x.
-- `real-drive-oval.mp4` — slide 4, our own JetRacer hero lap (full-bleed), 1.4x.
+- `monza-start.mp4` — slide 3, a 17 s F1 race-start clip (2020 Italian GP), plays at 1x (normal speed).
+- `real-drive-oval.mp4` — slide 4, our own JetRacer hero lap (full-bleed), 1.5x.
 - `real-pitstop-charging.mp4` — slide 10 (verdict) and slide 18 (the app); on 18 it
   starts 10 s in via `data-start`, focused on the CHARGING interaction.
 - `real-curve.mp4` — slide 12, cornering = tire wear.
@@ -21,9 +46,9 @@ Media that must sit next to the HTML:
 - `real-drive-oval.mp4`, `real-curve.mp4`, `real-drive-long.mp4`,
   `real-drive-follow.mp4` — backup reel `b05`.
 
-All clips except Monza are muted and loop. Every clip tagged `data-auto`
+All clips except Monza and the hero lap are muted and loop. Every clip tagged `data-auto`
 auto-plays on slide entry and rewinds on leave; `data-rate` sets its speed
-(Monza 1.5x, the rest ~1.35–1.4x) and `data-start` trims seconds off the front.
+(Monza 1x / normal speed, the hero lap 1.5x, the rest ~1.35–1.4x) and `data-start` trims seconds off the front.
 The backup reel (`b05`) clips play on click and keep their speed. Everything else
 is embedded in the HTML.
 
@@ -103,10 +128,10 @@ to one during Q&A.
   report is only used where the summary is silent.
 - The track on slides 16, 19 and the backups is rendered live from the real
   627-point Monza centreline (`app/src/track/monza.generated.ts`).
-- Slide 3 is a full-bleed `<video>` with sound, played at 1.5x. It auto-plays on
+- Slide 3 is a full-bleed `<video>` with sound, played at 1x (normal speed). It auto-plays on
   entry and pauses on leave; if the browser blocks autoplay-with-audio, click play
   (controls are shown). Source: 2020 Italian GP, Formula 1. Slide 4 is our own
-  JetRacer hero lap, muted and looping at 1.4x, so it plays without a prompt.
+  JetRacer hero lap, muted and looping at 1.5x, so it plays without a prompt.
 - Tire and fuel models are shown in plain English with a permanent amber
   `SIMULATED · HAND-TUNED` badge; the latency figure carries
   `ESTIMATE · PER STAGE, NOT END-TO-END`. The maths stays in the report.

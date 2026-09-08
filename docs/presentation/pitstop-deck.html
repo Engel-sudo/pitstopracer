@@ -786,8 +786,9 @@
   #p09 .after{margin-top:26px}
 
   /* ---- 11 tire wear ---- */
-  .tirewrap{display:grid;grid-template-columns:.9fr 1.1fr;gap:36px;flex:1;align-items:center;min-height:0;margin-top:8px}
-  .chassis{position:relative;width:100%;aspect-ratio:1.15;max-width:340px;margin:0 auto;
+  #p11 h2.head{max-width:48ch;white-space:nowrap}
+  .tirewrap{display:grid;grid-template-columns:.55fr 1.05fr 1fr;gap:40px;flex:1;align-items:center;min-height:0;margin-top:8px}
+  .chassis{position:relative;width:100%;aspect-ratio:1.15;max-width:220px;margin:0 auto;
     border:1px dashed rgba(255,255,255,.13);border-radius:10px}
   .chassis .cx{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-family:var(--mono);font-size:10px;
     letter-spacing:.18em;color:var(--fg-dim);text-transform:uppercase}
@@ -1002,7 +1003,7 @@
 
     <!-- ============ 03 · MONZA VIDEO ============ -->
     <section class="slide" id="svid" data-steps="1" data-section="Real racing">
-      <video class="vfill" id="vid-monza" src="monza-start.mp4" data-auto data-rate="1.5" playsinline preload="auto" controls></video>
+      <video class="vfill" id="vid-monza" src="monza-start.mp4" data-auto data-rate="1" playsinline preload="auto" controls></video>
       <div class="vcap">
         <div class="eyebrow">// Monza &middot; the strategy is the race</div>
         <div class="vsrc">2020 Italian Grand Prix &middot; Formula 1</div>
@@ -1012,7 +1013,7 @@
 
     <!-- ============ 03b · OUR CAR (real hero lap) ============ -->
     <section class="slide" id="shero" data-steps="1" data-section="Our car">
-      <video class="vfill" id="vid-hero" src="real-drive-oval.mp4" data-auto data-rate="1.4" muted loop playsinline preload="auto"></video>
+      <video class="vfill" id="vid-hero" src="real-drive-oval.mp4" data-auto data-rate="1.5" muted loop playsinline preload="auto"></video>
       <div class="vcap">
         <div class="eyebrow">// Our car &middot; same idea, one tenth the scale</div>
         <div class="vsrc">JetRacer &middot; autonomous, on our own track</div>
@@ -1187,16 +1188,14 @@
         <span class="badge-sim">Simulated &middot; hand-tuned &middot; not bench-calibrated</span>
       </div>
       <div class="tirewrap">
-        <div>
-          <div class="chassis">
-            <div class="cx">front &uarr;</div>
-            <div class="tyre fl" id="ty-fl"><i></i><b>100</b></div>
-            <div class="tyre fr" id="ty-fr"><i></i><b>100</b></div>
-            <div class="tyre rl" id="ty-rl"><i></i><b>100</b></div>
-            <div class="tyre rr" id="ty-rr"><i></i><b>100</b></div>
-          </div>
-          <div class="realmedia rvideo" style="margin-top:14px;max-width:340px;margin-left:auto;margin-right:auto"><video src="real-curve.mp4" data-auto data-rate="1.4" muted loop playsinline preload="auto"></video><span class="rlabel">Real car · every corner is what we charge as wear</span></div>
+        <div class="chassis">
+          <div class="cx">front &uarr;</div>
+          <div class="tyre fl" id="ty-fl"><i></i><b>100</b></div>
+          <div class="tyre fr" id="ty-fr"><i></i><b>100</b></div>
+          <div class="tyre rl" id="ty-rl"><i></i><b>100</b></div>
+          <div class="tyre rr" id="ty-rr"><i></i><b>100</b></div>
         </div>
+        <div class="realmedia rvideo"><video src="real-curve.mp4" data-auto data-rate="1.4" muted loop playsinline preload="auto"></video><span class="rlabel">Real car · every corner is what we charge as wear</span></div>
         <div class="tirefacts">
           <div class="tfact step" data-s="1"><b>Wear is charged for cornering, not for driving</b>
             <ul class="blt">
@@ -1331,17 +1330,10 @@
       <h2 class="head sm">The car races. The phone watches.</h2>
       <div class="vidcol">
         <div class="vidcol-l">
-          <div class="topo">
-            <div class="tnode step" data-s="1"><b>JetRacer</b><span>publishes over plain MQTT<br>port 1883</span></div>
-            <div class="tarr step" data-s="2"><i></i><b>telemetry &rarr;</b></div>
-            <div class="tnode br step" data-s="1"><b>Mosquitto broker</b><span>on a local Wi-Fi hotspot<br>the only thing both sides know about</span></div>
-            <div class="tarr step" data-s="2"><i style="animation-delay:.5s"></i><b>&larr; commands</b></div>
-            <div class="tnode step" data-s="1"><b>Expo phone app</b><span>MQTT over WebSocket<br>port 9001</span></div>
-          </div>
-          <div class="topicgrid step" data-s="3">
+          <div class="topicgrid step" data-s="3" style="margin-top:0">
             <code>race/car1/state</code><code>race/car1/battery</code><code>race/car1/fuel</code><code>race/car1/tires</code><code>race/car1/imu</code><code>race/car1/command/rain</code>
           </div>
-          <div class="latwrap step" data-s="4">
+          <div class="latwrap step" data-s="4" style="margin-top:14px">
             <div class="latrow" id="lat1" style="--w:19%"><div class="lk">Capture the frame</div><div class="lb"><i></i></div><div class="lv">15 ms</div></div>
             <div class="latrow" id="lat2" style="--w:31%"><div class="lk">Run the network</div><div class="lb"><i></i></div><div class="lv">25 ms</div></div>
             <div class="latrow" id="lat3" style="--w:6%"><div class="lk">Decide</div><div class="lb"><i></i></div><div class="lv">5 ms</div></div>
@@ -1351,7 +1343,14 @@
           </div>
         </div>
         <div class="vidcol-r">
-          <div class="realmedia rvideo"><video src="real-telemetry.mp4" data-auto data-rate="1.35" muted loop playsinline preload="auto"></video><span class="rlabel live">Real car driving · phone streaming speed · battery · tires · mode</span></div>
+          <div class="topo">
+            <div class="tnode step" data-s="1"><b>JetRacer</b><span>publishes over plain MQTT<br>port 1883</span></div>
+            <div class="tarr step" data-s="2"><i></i><b>telemetry &rarr;</b></div>
+            <div class="tnode br step" data-s="1"><b>Mosquitto broker</b><span>on a local Wi-Fi hotspot<br>the only thing both sides know about</span></div>
+            <div class="tarr step" data-s="2"><i style="animation-delay:.5s"></i><b>&larr; commands</b></div>
+            <div class="tnode step" data-s="1"><b>Expo phone app</b><span>MQTT over WebSocket<br>port 9001</span></div>
+          </div>
+          <div class="realmedia rvideo" style="margin-top:20px"><video src="real-telemetry.mp4" data-auto data-rate="1.35" muted loop playsinline preload="auto"></video><span class="rlabel live">Real car driving · phone streaming speed · battery · tires · mode</span></div>
         </div>
       </div>
     </section>
@@ -1587,7 +1586,7 @@
     16:['KELLY · The call slide. The climax. Slow down, do not rush.','So now put all three clocks in one place, because this is where it all comes together. The car is watching battery, tires and fuel at the same time, and each one is shouting a different deadline. The rule it follows is simple and smart: obey the clock that runs out first. But, and this is the clever part, if a second clock is going to run out within a lap or two of the first, it does both jobs in the same stop, because stopping twice always costs more than it saves. And sitting on top of everything, untouchable, is the safety rule: if a person steps in front of the car, it stops, full stop, no matter what the strategy wants. One car, three deadlines, one pit lane, and it sorts the whole thing out by itself.'],
     17:['KATRIN · Telemetry slide + driving video. Point at the live numbers.','Thanks, Kelly. Now, how do we, the humans, see any of this? The car and the phone never actually talk to each other directly. Instead there is a little post office in the middle, a message broker, and both sides just leave messages there. That means either one can drop off Wi-Fi and nothing breaks. Watch the clip: the car is driving, and every number on that phone, speed, battery, fuel, all four tires, the mode, is arriving live, a fraction of a second after it happens on the car. Start to finish, the whole loop runs in well under a tenth of a second, which is fast enough for a person on the pit wall to react in real time.'],
     18:['KATRIN · App slide + charging video (starts mid-stop). Sell the dashboard.','And this is what it looks like in your hand during an actual pit stop. This is the live app, and right now the car is on charge, you can see the mode says CHARGING and the battery is ticking upward in real time. Every tile you see, the speed, the fuel, each tire, is a message the car sent a heartbeat ago. And I want to be really clear about one thing: the phone is not driving the car and it did not order this stop. The car decided to pit all by itself. The app is simply the window we watch it through. It is the entire pit wall, shrunk down to fit in your pocket.'],
-    19:['KATRIN · Race sim slide. Stay quiet ~15s, then narrate softly.','Let me pull it all together in one simulated lap, with everything switched on at once. Just watch for a moment. ... There, the rain arrives, and the grip drops. ... The tire clock collapses. ... The pit window opens up. ... And the car dives into the pit lane, takes its service, and rejoins. Three clocks, all fighting each other, and the car resolving the whole argument on its own, in real time, without a single human input.'],
+    19:['KATRIN · Race sim slide. Stay quiet ~15s, then narrate softly.','Let me pull it all together in one simulated lap, with everything switched on at once. Just watch for a moment. ... There, the rain arrives, and the grip drops. ... The tire clock collapses. ... The pit window opens up. ... And the car dives into the pit lane, takes its service, and rejoins. Three clocks, all fighting each other, and the car resolving the whole argument on its own, in real time, without a single human input. One quick side note on the track itself: the original Monza layout you are watching here was hand-built out of foam. Unfortunately it got locked away in a storage room on Etzelstraße and we were never able to get it back out. So every clip we are showing you today, including this one, had to be recorded on a temporary replacement layout we built in the meantime.'],
     20:['KATRIN · Close slide. Be honest, then land the last line and stop.','So, to be straight with you about where we are: the perception, the driving, the battery strategy and the whole app, that all runs on the real car today, exactly as you have seen it. The tire and fuel models are built and simulated, and the next step is closing them fully into the live control loop. We think that honesty is a strength, not a weakness. Because what we have built is a tiny car that treats every lap like a real race: it knows what it is spending, it knows when it will run out, and it decides for itself when to pit. Thank you very much, we would love to take your questions.'],
     21:['BACKUP · Track geometry. Only if asked.','Quick answer: the digital twin is the real track. We pulled six hundred and twenty-seven points off our own track drawing to build the centreline, it works out to about twenty-two metres a lap, and the pit lane joins on at roughly three-quarter distance. The photo there is a second track layout we also built and drove on.'],
     22:['BACKUP · Team. Only if asked.','Three teams, seven of us. One team on perception and driving, one on the resource strategy and the pit-stop logic, and one on the telemetry and the phone app.'],
