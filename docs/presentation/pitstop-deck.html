@@ -117,13 +117,13 @@
   .arow .phys em{color:var(--amber);font-style:normal;font-weight:500}
   #s4 .kicker{margin-top:22px}
 
-  /* video cold-open (slide 3) */
-  #svid{padding:0;background:#000}
-  #svid .vfill{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;background:#000;z-index:1;display:block}
-  #svid .vcap{position:absolute;left:84px;bottom:70px;z-index:3}
-  #svid .vcap .eyebrow{margin-bottom:6px;text-shadow:0 2px 14px rgba(0,0,0,.85)}
-  #svid .vsrc{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--fg-mid);text-shadow:0 2px 14px rgba(0,0,0,.95)}
-  #svid .vhint{position:absolute;right:84px;bottom:70px;z-index:3;font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--fg-dim);text-shadow:0 2px 14px rgba(0,0,0,.95)}
+   /* video cold-open (slide 3) + real hero lap (slide 4) */
+   #svid,#shero{padding:0;background:#000}
+   #svid .vfill,#shero .vfill{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;background:#000;z-index:1;display:block}
+   #svid .vcap,#shero .vcap{position:absolute;left:84px;bottom:70px;z-index:3}
+   #svid .vcap .eyebrow,#shero .vcap .eyebrow{margin-bottom:6px;text-shadow:0 2px 14px rgba(0,0,0,.85)}
+   #svid .vsrc,#shero .vsrc{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--fg-mid);text-shadow:0 2px 14px rgba(0,0,0,.95)}
+   #svid .vhint,#shero .vhint{position:absolute;right:84px;bottom:70px;z-index:3;font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--fg-dim);text-shadow:0 2px 14px rgba(0,0,0,.95)}
 
   /* slide 5 : the machine */
   .machine{display:grid;grid-template-columns:1.05fr .95fr;gap:30px;flex:1;align-items:center;margin-top:4px}
@@ -605,7 +605,10 @@
   .rseg.low .rv{color:var(--red)}
   .rseg.pulse{animation:rsegPulse .3s 3}
   @keyframes rsegPulse{0%,100%{background:transparent}50%{background:rgba(255,59,71,.16)}}
-  .stage.rail-on .slide:not(.actcard):not(#svid):not(.nopad){padding-bottom:150px}
+  .stage.rail-on .slide:not(.actcard):not(#svid):not(#shero):not(.nopad){padding-bottom:150px}
+  /* clock rail removed: never show it, never reserve space for it */
+  .rail{display:none !important}
+  .stage.rail-on .slide:not(.actcard):not(#svid):not(#shero):not(.nopad){padding-bottom:92px}
 
   /* ---- act cards ---- */
   .slide.actcard{padding:0;align-items:center;justify-content:center;text-align:center;background:#05080A}
@@ -635,6 +638,27 @@
   .mediaslot .mtxt span{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--fg-dim)}
   .mediarow{display:flex;gap:12px;flex-wrap:wrap}
   .mediarow .mediaslot{flex:1;min-width:220px}
+
+  /* ---- real footage (embedded video / image) ---- */
+  .realmedia{position:relative;border:1px solid var(--line-strong);border-radius:6px;overflow:hidden;
+    background:#05080A;box-shadow:0 10px 34px rgba(0,0,0,.5)}
+  .realmedia video,.realmedia img{display:block;width:100%;height:100%;object-fit:cover;background:#05080A}
+  .realmedia .rlabel{position:absolute;left:9px;bottom:8px;z-index:2;display:inline-flex;align-items:center;gap:7px;
+    font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--fg);
+    background:rgba(5,8,10,.72);border:1px solid rgba(255,255,255,.16);padding:4px 8px;border-radius:2px;backdrop-filter:blur(3px)}
+  .realmedia .rlabel::before{content:"";width:6px;height:6px;background:var(--green);flex:none}
+  .realmedia .rlabel.live::before{animation:rlivepulse 1.3s ease-in-out infinite}
+  @keyframes rlivepulse{0%,100%{opacity:1}50%{opacity:.25}}
+  .realmedia.rvideo{aspect-ratio:16/9}
+  .mediarow .realmedia{flex:1;min-width:220px;aspect-ratio:16/9}
+
+  /* ---- two-column slide: supporting text left, big video right ---- */
+  .vidcol{display:grid;grid-template-columns:1fr 1.15fr;gap:34px;flex:1;align-items:center;min-height:0;margin-top:14px}
+  .vidcol-l{min-width:0}
+  .vidcol-r{min-width:0}
+  .vidcol-r .realmedia{width:100%}
+  .vidcol-r .realmedia.rvideo{aspect-ratio:16/9;box-shadow:0 18px 54px rgba(0,0,0,.6)}
+  .vidcol-r .rlabel{font-size:10.5px;left:11px;bottom:10px}
   .headrow{display:flex;align-items:flex-start;justify-content:space-between;gap:24px;padding-right:290px}
   .plain{font-size:17px;line-height:1.55;color:var(--fg-mid);max-width:60ch}
   .blt{list-style:none;display:flex;flex-direction:column;gap:6px;margin:6px 0 0}
@@ -978,7 +1002,7 @@
 
     <!-- ============ 03 · MONZA VIDEO ============ -->
     <section class="slide" id="svid" data-steps="1" data-section="Real racing">
-      <video class="vfill" id="vid-monza" src="monza-start.mp4" playsinline preload="auto" controls></video>
+      <video class="vfill" id="vid-monza" src="monza-start.mp4" data-auto data-rate="1.5" playsinline preload="auto" controls></video>
       <div class="vcap">
         <div class="eyebrow">// Monza &middot; the strategy is the race</div>
         <div class="vsrc">2020 Italian Grand Prix &middot; Formula 1</div>
@@ -986,7 +1010,15 @@
       <div class="vhint">&rarr; to continue</div>
     </section>
 
-    <!-- ============ 04 · THREE CLOCKS ============ -->
+    <!-- ============ 03b · OUR CAR (real hero lap) ============ -->
+    <section class="slide" id="shero" data-steps="1" data-section="Our car">
+      <video class="vfill" id="vid-hero" src="real-drive-oval.mp4" data-auto data-rate="1.4" muted loop playsinline preload="auto"></video>
+      <div class="vcap">
+        <div class="eyebrow">// Our car &middot; same idea, one tenth the scale</div>
+        <div class="vsrc">JetRacer &middot; autonomous, on our own track</div>
+      </div>
+      <div class="vhint">&rarr; to continue</div>
+    </section>
     <section class="slide cine" id="p04" data-steps="4" data-section="Three clocks">
       <div class="eyebrow">// The whole talk in one picture</div>
       <h2 class="head sm">Three resources. Three clocks. One race.</h2>
@@ -1060,7 +1092,6 @@
               <li>It can override everything else.</li>
               <li>Tested over <b>40</b> person-in-path trials: <b>40/40</b> detected, <b>38/40</b> a full stop, <b>0</b> false positives.</li>
             </ul>
-            <div class="mediaslot" style="margin-top:8px"><span class="micon">▶</span><div class="mtxt"><b>PLACEHOLDER — clip</b><span>Object(Human) Detection – Reverse Driving.mp4</span></div></div>
             <span class="tag" id="yolocount">2 in a row &rarr; CONFIRMED</span></div>
           <div class="head3 gr step" data-s="4"><b>Where am I on the track?</b>
             <ul class="blt gr">
@@ -1111,22 +1142,28 @@
     <section class="slide cine" id="p09" data-steps="4" data-section="The verdict">
       <div class="eyebrow amber">// The decision, exactly as the car makes it</div>
       <h2 class="head sm">Four laps to the finish. Do we make it?</h2>
-      <div class="calc">
-        <div class="ck2 step" data-s="1">Battery in the pack</div><div class="cv2 cy step" data-s="1">35 %</div>
-        <div class="ck2 step" data-s="2">4 laps still to run, at 8 % each</div><div class="cv2 step" data-s="2">32 %</div>
-        <div class="ck2 step" data-s="3">plus the 5 % safety reserve</div><div class="cv2 am step" data-s="3">37 %</div>
-      </div>
-      <div class="compare step" data-s="4" id="cmp09">
-        <span class="cmp">35 %</span><span class="op">&lt;</span><span class="cmp">37 %</span>
-        <span class="stamp" id="stamp09">BOX</span>
-      </div>
-      <div class="plain after step" data-s="4">
-        <ul class="blt">
-          <li>We do not make it. The car calls itself in.</li>
-          <li>Takes on charge, rejoins once the pack is back to <b>70 %</b>.</li>
-          <li>No human touches anything.</li>
-        </ul>
-        <div class="mediaslot" style="margin-top:10px"><span class="micon">▶</span><div class="mtxt"><b>PLACEHOLDER — clip</b><span>Pitstop + Charging.mp4</span></div></div>
+      <div class="vidcol">
+        <div class="vidcol-l">
+          <div class="calc">
+            <div class="ck2 step" data-s="1">Battery in the pack</div><div class="cv2 cy step" data-s="1">35 %</div>
+            <div class="ck2 step" data-s="2">4 laps still to run, at 8 % each</div><div class="cv2 step" data-s="2">32 %</div>
+            <div class="ck2 step" data-s="3">plus the 5 % safety reserve</div><div class="cv2 am step" data-s="3">37 %</div>
+          </div>
+          <div class="compare step" data-s="4" id="cmp09">
+            <span class="cmp">35 %</span><span class="op">&lt;</span><span class="cmp">37 %</span>
+            <span class="stamp" id="stamp09">BOX</span>
+          </div>
+          <div class="plain after step" data-s="4">
+            <ul class="blt">
+              <li>We do not make it. The car calls itself in.</li>
+              <li>Takes on charge, rejoins once the pack is back to <b>70 %</b>.</li>
+              <li>No human touches anything.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="vidcol-r">
+          <div class="realmedia rvideo"><video src="real-pitstop-charging.mp4" data-auto data-rate="1.35" muted loop playsinline preload="auto"></video><span class="rlabel live">Real pit box · self-parks · app shows CHARGING</span></div>
+        </div>
       </div>
     </section>
 
@@ -1158,6 +1195,7 @@
             <div class="tyre rl" id="ty-rl"><i></i><b>100</b></div>
             <div class="tyre rr" id="ty-rr"><i></i><b>100</b></div>
           </div>
+          <div class="realmedia rvideo" style="margin-top:14px;max-width:340px;margin-left:auto;margin-right:auto"><video src="real-curve.mp4" data-auto data-rate="1.4" muted loop playsinline preload="auto"></video><span class="rlabel">Real car · every corner is what we charge as wear</span></div>
         </div>
         <div class="tirefacts">
           <div class="tfact step" data-s="1"><b>Wear is charged for cornering, not for driving</b>
@@ -1182,31 +1220,30 @@
     </section>
 
     <!-- ============ 12 · RAIN ============ -->
-    <section class="slide cine" id="p12" data-steps="4" data-section="Rain">
+    <section class="slide cine" id="p12" data-steps="3" data-section="Rain">
       <div class="rainfx" id="rain12"></div>
       <div class="eyebrow amber">// The cyber-physical moment</div>
       <h2 class="head sm">A phone changes how fast the car is allowed to go</h2>
-      <div class="rainwrap">
-        <div>
+      <div class="vidcol">
+        <div class="vidcol-l">
           <div class="cmdbox step" data-s="1">Someone taps <b>&ldquo;Rain&rdquo;</b> in the app:<br>
             <span class="tp">race/car1/command/rain</span><br>
             { "command": "rain", "enabled": true }</div>
-          <div class="plain step" data-s="2" style="margin-top:16px">
+          <div class="plain step" data-s="2" style="margin-top:14px">
             <ul class="blt">
               <li>The message goes phone &rarr; broker &rarr; car.</li>
               <li>The car handles it on a <b>separate listener</b>, so the driving loop never pauses to read mail. It just sees a flag flip on the next frame.</li>
             </ul>
           </div>
-          <div class="mono-note step" data-s="2" style="margin-top:10px">Expo app &nbsp;&rarr;&nbsp; Mosquitto broker &nbsp;&rarr;&nbsp; JetRacer &nbsp;&rarr;&nbsp; <b>rain_enabled = True</b></div>
-          <div class="mediaslot step" data-s="2" style="margin-top:10px"><span class="micon">▶</span><div class="mtxt"><b>PLACEHOLDER — clip</b><span>Rain Button Command.mp4</span></div></div>
-        </div>
-        <div>
-          <div class="step" data-s="3" id="gripchart" style="width:100%"></div>
-          <div class="thrbar step" data-s="4">
+          <div class="thrbar step" data-s="3" style="margin-top:14px">
             <div class="tl2"><span>Maximum throttle</span><span id="thrval">0.20</span></div>
             <div class="tb" id="thrbar"><i style="width:100%"></i></div>
             <div class="mono-note" style="margin-top:4px">Less grip available: the car caps itself at roughly a third of its dry speed. Nothing else in the code changed.</div>
           </div>
+          <div id="gripchart" style="display:none"></div>
+        </div>
+        <div class="vidcol-r">
+          <div class="realmedia rvideo step" data-s="1"><video src="real-rain-command.mp4" data-auto data-rate="1.35" muted loop playsinline preload="auto"></video><span class="rlabel live">Real car · app RAIN: ON · throttle capped live</span></div>
         </div>
       </div>
     </section>
@@ -1292,29 +1329,60 @@
     <section class="slide cine" id="p16" data-steps="4" data-section="Telemetry">
       <div class="eyebrow">// Telemetry &middot; getting the numbers off the car</div>
       <h2 class="head sm">The car races. The phone watches.</h2>
-      <div class="topo">
-        <div class="tnode step" data-s="1"><b>JetRacer</b><span>publishes over plain MQTT<br>port 1883</span></div>
-        <div class="tarr step" data-s="2"><i></i><b>telemetry &rarr;</b></div>
-        <div class="tnode br step" data-s="1"><b>Mosquitto broker</b><span>on a local Wi-Fi hotspot<br>the only thing both sides know about</span></div>
-        <div class="tarr step" data-s="2"><i style="animation-delay:.5s"></i><b>&larr; commands</b></div>
-        <div class="tnode step" data-s="1"><b>Expo phone app</b><span>MQTT over WebSocket<br>port 9001</span></div>
-      </div>
-      <div class="mono-note step" data-s="2" style="margin-top:12px">Two different transports on purpose: the car speaks the cheapest protocol its hardware allows, the phone speaks the only one its sandbox allows. Neither side needs to know where the other is.</div>
-      <div class="topicgrid step" data-s="3">
-        <code>race/car1/state</code><code>race/car1/battery</code><code>race/car1/fuel</code><code>race/car1/tires</code><code>race/car1/imu</code><code>race/car1/command/rain</code>
-      </div>
-      <div class="latwrap step" data-s="4">
-        <div class="latrow" id="lat1" style="--w:19%"><div class="lk">Capture the frame</div><div class="lb"><i></i></div><div class="lv">15 ms</div></div>
-        <div class="latrow" id="lat2" style="--w:31%"><div class="lk">Run the network</div><div class="lb"><i></i></div><div class="lv">25 ms</div></div>
-        <div class="latrow" id="lat3" style="--w:6%"><div class="lk">Decide</div><div class="lb"><i></i></div><div class="lv">5 ms</div></div>
-        <div class="latrow" id="lat4" style="--w:44%"><div class="lk">Publish &rarr; broker &rarr; app</div><div class="lb"><i></i></div><div class="lv">35 ms</div></div>
-        <div class="lattotal"><span class="lt">~80 ms</span><span class="ls">against a 100 ms target, fast enough for a human on the pit wall to react.</span>
-          <span class="badge-sim">Estimate &middot; per stage, not end-to-end</span></div>
-        <div class="mediaslot" style="margin-top:10px"><span class="micon">▶</span><div class="mtxt"><b>PLACEHOLDER — clip</b><span>Jetracer Real Time Data Transmission.mp4</span></div></div>
+      <div class="vidcol">
+        <div class="vidcol-l">
+          <div class="topo">
+            <div class="tnode step" data-s="1"><b>JetRacer</b><span>publishes over plain MQTT<br>port 1883</span></div>
+            <div class="tarr step" data-s="2"><i></i><b>telemetry &rarr;</b></div>
+            <div class="tnode br step" data-s="1"><b>Mosquitto broker</b><span>on a local Wi-Fi hotspot<br>the only thing both sides know about</span></div>
+            <div class="tarr step" data-s="2"><i style="animation-delay:.5s"></i><b>&larr; commands</b></div>
+            <div class="tnode step" data-s="1"><b>Expo phone app</b><span>MQTT over WebSocket<br>port 9001</span></div>
+          </div>
+          <div class="topicgrid step" data-s="3">
+            <code>race/car1/state</code><code>race/car1/battery</code><code>race/car1/fuel</code><code>race/car1/tires</code><code>race/car1/imu</code><code>race/car1/command/rain</code>
+          </div>
+          <div class="latwrap step" data-s="4">
+            <div class="latrow" id="lat1" style="--w:19%"><div class="lk">Capture the frame</div><div class="lb"><i></i></div><div class="lv">15 ms</div></div>
+            <div class="latrow" id="lat2" style="--w:31%"><div class="lk">Run the network</div><div class="lb"><i></i></div><div class="lv">25 ms</div></div>
+            <div class="latrow" id="lat3" style="--w:6%"><div class="lk">Decide</div><div class="lb"><i></i></div><div class="lv">5 ms</div></div>
+            <div class="latrow" id="lat4" style="--w:44%"><div class="lk">Publish &rarr; broker &rarr; app</div><div class="lb"><i></i></div><div class="lv">35 ms</div></div>
+            <div class="lattotal"><span class="lt">~80 ms</span><span class="ls">against a 100 ms target, fast enough for a human on the pit wall to react.</span>
+              <span class="badge-sim">Estimate &middot; per stage, not end-to-end</span></div>
+          </div>
+        </div>
+        <div class="vidcol-r">
+          <div class="realmedia rvideo"><video src="real-telemetry.mp4" data-auto data-rate="1.35" muted loop playsinline preload="auto"></video><span class="rlabel live">Real car driving · phone streaming speed · battery · tires · mode</span></div>
+        </div>
       </div>
     </section>
 
-    <!-- ============ 17 · RACE SIM DEMO ============ -->
+    <!-- ============ 17 · APP INTERACTION (Katrin) ============ -->
+    <section class="slide cine" id="papp" data-steps="3" data-section="The app">
+      <div class="eyebrow">// The pit wall in your hand &middot; the app while the car works</div>
+      <h2 class="head sm">One glance, and you know everything the car knows</h2>
+      <div class="vidcol">
+        <div class="vidcol-l">
+          <div class="plain step" data-s="1">
+            <ul class="blt">
+              <li>This is the live dashboard during a real pit stop, running on a phone over the same broker.</li>
+              <li>Mode reads <b>CHARGING</b>. The battery climbs in real time, from the twenties back toward seventy.</li>
+            </ul>
+          </div>
+          <div class="plain step" data-s="2" style="margin-top:14px">
+            <ul class="blt gr">
+              <li>Every tile, speed, battery, fuel, all four tires, the mode, is a message the car published a fraction of a second ago.</li>
+              <li>The phone never commands the car to charge. The car decided that itself; the app just shows you it happening.</li>
+            </ul>
+          </div>
+          <div class="mono-note step" data-s="3" style="margin-top:12px">race/car1/state &nbsp;&middot;&nbsp; race/car1/battery &nbsp;&middot;&nbsp; the pit wall, in your pocket</div>
+        </div>
+        <div class="vidcol-r">
+          <div class="realmedia rvideo"><video src="real-pitstop-charging.mp4" data-auto data-rate="1.35" data-start="10" muted loop playsinline preload="auto"></video><span class="rlabel live">Live app during a real pit stop · MODE: CHARGING</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 18 · RACE SIM DEMO ============ -->
     <section class="slide cine" id="p17" data-steps="1" data-section="Demo">
       <div class="eyebrow">// Full scene &middot; one lap with everything switched on</div>
       <h2 class="head sm">Watch the three clocks fight each other</h2>
@@ -1390,7 +1458,7 @@
           <div class="f step" data-s="1"><div class="v"><em>627</em> points</div><div class="k">centreline extracted from the track drawing</div></div>
           <div class="f step" data-s="2"><div class="v"><em>22.01</em> m</div><div class="k">lap length &middot; 72 cm track width &middot; 52 cm pit lane</div></div>
           <div class="f step" data-s="3"><div class="v">entry <em>0.742</em> &middot; exit <em>0.863</em></div><div class="k">where the pit lane joins and leaves the lap</div></div>
-          <div class="mediaslot step" data-s="3"><span class="micon">🖼</span><div class="mtxt"><b>PLACEHOLDER — photo</b><span>The 2nd Map.jpg</span></div></div>
+          <div class="realmedia step" data-s="3" style="aspect-ratio:4/3"><img src="real-map2.jpg" alt="Second hand-built track layout"><span class="rlabel">Real build · a second track layout</span></div>
         </div>
       </div>
     </section>
@@ -1436,19 +1504,18 @@
     <section class="slide cine" id="b05" data-steps="1" data-backup="1" data-section="Backup · Footage">
       <div class="eyebrow">// Backup &middot; raw driving footage reel</div>
       <h2 class="head sm">The car, on the track, unedited</h2>
-      <div class="mediarow" style="margin-top:18px;max-width:900px">
-        <div class="mediaslot"><span class="micon">▶</span><div class="mtxt"><b>PLACEHOLDER — clip</b><span>Autonomous Drive 1.mp4</span></div></div>
-        <div class="mediaslot"><span class="micon">▶</span><div class="mtxt"><b>PLACEHOLDER — clip</b><span>Autonomous Drive 2.mp4</span></div></div>
-        <div class="mediaslot"><span class="micon">▶</span><div class="mtxt"><b>PLACEHOLDER — clip</b><span>Autonomous Drive 3.mp4</span></div></div>
-        <div class="mediaslot"><span class="micon">▶</span><div class="mtxt"><b>PLACEHOLDER — clip</b><span>Autonomous Drive 4.mp4</span></div></div>
-        <div class="mediaslot"><span class="micon">▶</span><div class="mtxt"><b>PLACEHOLDER — clip</b><span>Autonomous Driving in The Curve.mp4</span></div></div>
+      <div class="mediarow" style="margin-top:18px;max-width:960px">
+        <div class="realmedia"><video src="real-drive-oval.mp4" data-rate="1.35" muted loop playsinline preload="metadata" controls></video><span class="rlabel">Oval · full laps</span></div>
+        <div class="realmedia"><video src="real-curve.mp4" data-rate="1.35" muted loop playsinline preload="metadata" controls></video><span class="rlabel">Curve tracking</span></div>
+        <div class="realmedia"><video src="real-drive-long.mp4" data-rate="1.35" muted loop playsinline preload="metadata" controls></video><span class="rlabel">Long layout · endurance</span></div>
+        <div class="realmedia"><video src="real-drive-follow.mp4" data-rate="1.35" muted loop playsinline preload="metadata" controls></video><span class="rlabel">Follow shot</span></div>
       </div>
     </section>
 
     <div class="footer">
       <div class="mark"><b>Pit-Stop</b> Racer Pro</div>
       <span id="f-section">Title</span>
-      <span id="f-count">01 · 18</span>
+      <span id="f-count">01 · 20</span>
     </div>
     <div class="sector" id="sector"><i></i><i></i><i></i><i></i><i></i><i></i></div>
 
@@ -1498,31 +1565,35 @@
 (function(){
   var TRACK =  {"field":{"w":590,"h":1000},"trackWidthCm":72,"pitWidthCm":52,"centerline":[[59.6,720.4],[60.0,716.3],[60.4,711.0],[60.8,706.6],[61.1,703.4],[61.9,694.5],[62.0,693.8],[62.5,687.4],[62.7,685.6],[63.3,678.7],[63.3,678.0],[64.2,668.4],[64.6,664.2],[64.8,661.1],[65.2,656.6],[65.4,653.8],[65.8,649.6],[66.0,646.5],[66.5,641.0],[66.8,638.4],[67.0,635.6],[67.1,633.8],[67.8,625.8],[68.3,620.8],[68.7,615.5],[69.1,611.7],[69.7,604.6],[69.7,604.5],[70.0,600.9],[70.2,598.2],[70.6,593.4],[70.9,590.2],[71.2,586.4],[71.5,583.3],[72.0,577.9],[72.2,574.7],[72.8,567.6],[72.9,567.2],[73.3,562.1],[73.4,561.5],[74.1,552.7],[74.5,548.7],[75.0,542.3],[75.4,538.7],[75.5,536.6],[76.0,531.6],[76.2,529.1],[76.6,524.4],[76.7,523.5],[77.4,515.2],[77.6,512.9],[78.3,504.0],[78.5,501.6],[78.8,498.3],[79.1,494.6],[79.2,493.7],[79.6,489.4],[79.9,485.8],[80.5,479.2],[80.5,478.7],[81.1,472.2],[81.1,471.5],[82.2,458.6],[82.6,454.4],[82.8,451.9],[82.8,451.4],[83.4,444.8],[83.9,438.8],[84.1,436.9],[84.5,431.7],[84.9,426.9],[85.5,419.6],[85.5,419.4],[86.0,413.6],[86.1,412.6],[86.6,406.3],[86.7,405.4],[87.2,399.0],[87.3,397.9],[89.2,384.8],[89.2,384.7],[89.8,383.0],[89.9,382.7],[90.0,382.4],[91.3,379.9],[92.0,378.9],[93.2,377.5],[94.1,376.8],[95.4,376.0],[95.6,375.9],[96.9,375.5],[97.7,375.3],[98.5,375.1],[99.8,374.9],[100.7,374.7],[101.7,374.4],[102.7,374.1],[103.2,373.8],[104.7,372.7],[105.1,372.2],[105.9,370.7],[105.9,370.6],[106.4,369.1],[106.5,368.9],[106.6,368.0],[106.7,367.5],[106.7,367.4],[106.8,363.9],[106.8,363.8],[106.8,362.9],[106.8,362.8],[106.6,361.3],[106.4,360.2],[106.1,358.7],[105.9,357.7],[105.0,354.3],[105.0,354.2],[104.0,350.7],[103.9,350.3],[103.6,349.0],[103.2,347.4],[102.5,345.0],[102.1,343.3],[101.8,342.1],[101.3,340.3],[100.9,338.6],[99.8,333.7],[99.7,333.6],[99.0,330.2],[98.5,327.6],[97.7,323.1],[97.6,322.6],[96.9,317.6],[96.5,314.0],[96.5,313.9],[96.4,312.7],[96.3,309.5],[96.1,306.7],[96.0,301.1],[96.0,297.4],[96.0,291.7],[96.0,291.0],[96.2,283.2],[96.3,281.9],[96.4,280.3],[96.5,279.0],[97.1,271.2],[97.4,268.5],[97.7,264.9],[98.1,261.5],[98.4,259.7],[99.3,254.0],[99.3,253.5],[99.8,251.3],[100.1,249.6],[101.1,245.1],[102.5,239.7],[104.3,233.8],[104.5,232.9],[107.3,225.6],[107.6,224.8],[110.1,219.3],[114.0,211.7],[114.8,210.2],[118.1,204.9],[120.7,201.3],[121.3,200.3],[123.6,197.2],[128.4,191.5],[129.7,190.0],[134.5,184.9],[137.5,182.5],[141.9,178.8],[142.6,178.2],[147.6,174.5],[148.7,173.7],[152.9,170.8],[158.1,167.6],[177.8,157.9],[182.3,156.2],[189.6,153.8],[196.9,151.9],[198.6,151.5],[206.1,150.0],[206.9,149.8],[209.4,149.3],[221.9,147.4],[223.3,147.2],[229.7,146.3],[234.8,145.8],[237.4,145.5],[239.1,145.4],[246.2,144.8],[247.0,144.7],[251.6,144.3],[252.7,144.2],[260.5,143.6],[263.8,143.3],[272.2,142.6],[275.0,142.4],[281.8,141.9],[285.0,141.7],[289.2,141.4],[302.8,140.6],[303.7,140.6],[308.7,140.3],[310.3,140.3],[316.6,140.0],[321.8,139.8],[324.8,139.7],[332.5,139.3],[332.7,139.3],[338.7,139.1],[340.6,139.1],[347.7,138.8],[347.9,138.8],[355.2,138.5],[355.4,138.5],[360.0,138.0],[360.6,137.9],[363.5,137.3],[363.6,137.3],[366.1,136.6],[366.9,136.3],[369.0,135.4],[372.3,133.7],[373.3,132.9],[374.2,131.9],[374.3,131.9],[375.7,129.8],[375.7,129.7],[376.6,127.8],[377.1,126.6],[377.6,125.6],[379.3,123.2],[379.5,122.9],[380.7,121.8],[381.0,121.5],[382.6,120.3],[383.3,119.7],[384.4,119.0],[385.7,118.3],[387.3,117.6],[389.5,116.6],[391.1,116.1],[391.9,115.9],[392.1,115.8],[395.7,114.9],[395.8,114.9],[399.3,114.2],[400.9,113.9],[402.9,113.5],[404.9,113.1],[406.5,112.9],[407.2,112.7],[410.3,112.1],[414.9,111.0],[416.0,110.7],[419.0,109.8],[420.5,109.4],[423.1,108.6],[424.7,108.1],[426.5,107.5],[429.0,106.8],[433.9,105.2],[434.0,105.2],[441.7,102.4],[442.9,102.0],[446.3,100.7],[447.6,100.1],[452.3,98.3],[452.9,98.1],[454.7,97.4],[457.7,96.3],[460.0,95.4],[465.0,93.8],[465.5,93.6],[472.5,91.2],[473.0,91.1],[480.7,88.5],[482.8,87.9],[485.7,87.1],[487.6,86.8],[493.9,85.9],[494.0,85.9],[496.8,85.8],[498.5,86.0],[504.3,87.2],[507.2,87.9],[508.8,88.3],[512.7,90.6],[512.8,90.6],[515.4,92.5],[516.2,93.1],[519.4,96.2],[520.5,97.5],[523.4,101.9],[524.1,103.0],[525.5,106.1],[526.3,108.5],[526.8,109.9],[528.0,114.3],[528.5,117.0],[528.8,119.0],[529.8,126.7],[529.8,126.9],[530.5,133.4],[530.8,136.9],[530.8,137.2],[531.1,142.2],[531.4,147.0],[531.8,152.6],[532.2,158.7],[532.3,159.6],[532.8,165.2],[532.8,165.3],[533.2,169.5],[533.4,171.9],[534.1,178.8],[534.4,182.6],[534.5,183.5],[534.9,188.5],[534.9,190.4],[535.0,193.9],[535.0,194.3],[534.8,197.4],[534.6,199.3],[534.5,200.5],[533.9,203.2],[532.1,207.4],[530.8,210.2],[529.1,212.8],[528.0,213.9],[522.1,218.7],[521.9,218.9],[519.8,220.4],[518.1,221.3],[514.7,223.1],[514.2,223.4],[509.6,225.7],[509.3,225.9],[502.4,229.4],[499.0,231.1],[497.2,232.1],[494.7,233.3],[493.8,233.8],[491.4,235.1],[485.6,238.2],[484.6,238.8],[480.8,240.8],[478.1,242.2],[476.1,243.3],[471.3,245.9],[470.4,246.4],[468.5,247.4],[466.5,248.6],[462.6,250.8],[461.3,251.5],[456.7,254.1],[455.4,254.9],[451.8,257.0],[449.4,258.4],[445.7,260.4],[444.3,261.2],[443.3,261.8],[441.7,262.7],[437.9,264.8],[433.9,267.0],[430.0,269.2],[426.0,271.5],[422.2,273.7],[420.7,274.5],[415.3,277.7],[413.8,278.6],[409.1,281.5],[409.0,281.5],[402.7,285.7],[401.8,286.3],[396.0,290.4],[394.6,291.5],[390.1,295.1],[389.0,296.0],[386.6,298.0],[378.1,304.9],[376.5,306.2],[373.1,309.0],[369.1,312.6],[360.6,320.0],[359.3,321.1],[356.1,323.9],[353.2,326.4],[349.5,329.6],[348.8,330.3],[343.8,334.6],[342.9,335.4],[340.4,337.6],[339.7,338.2],[335.3,342.0],[331.8,345.0],[329.1,347.4],[321.6,353.9],[317.8,357.2],[316.7,358.2],[313.6,360.9],[313.1,361.3],[309.2,364.7],[305.3,368.1],[299.0,373.6],[298.8,373.7],[291.6,380.0],[290.9,380.6],[284.7,386.0],[282.7,387.7],[280.1,390.0],[277.4,392.3],[266.2,402.1],[264.1,404.0],[260.6,406.9],[260.3,407.2],[253.4,413.2],[252.2,414.2],[247.6,418.2],[244.8,420.6],[240.2,424.7],[236.4,427.9],[235.6,428.7],[230.6,433.0],[230.5,433.1],[226.7,436.4],[226.2,436.9],[223.3,439.5],[222.4,440.3],[220.1,442.5],[218.3,444.2],[216.9,445.6],[214.6,448.0],[212.9,450.6],[210.9,454.7],[210.8,455.0],[209.9,458.1],[209.8,459.3],[209.5,462.9],[209.4,463.8],[209.5,470.7],[209.5,472.6],[209.6,474.4],[209.4,476.7],[209.4,477.4],[208.6,484.9],[208.5,485.3],[208.0,488.2],[207.1,490.6],[206.6,491.8],[204.8,496.1],[204.2,497.3],[202.1,501.1],[201.4,502.2],[199.0,505.3],[197.4,507.2],[195.2,509.5],[194.2,510.5],[192.3,512.4],[190.3,514.5],[189.5,515.4],[187.0,518.4],[184.4,522.8],[183.9,523.9],[182.0,528.8],[181.6,530.0],[180.7,533.6],[180.5,534.3],[179.3,540.7],[179.2,540.9],[178.6,546.3],[178.2,550.6],[177.9,553.7],[177.7,556.5],[177.1,562.4],[176.7,567.0],[176.5,569.0],[175.8,575.7],[175.7,576.5],[175.3,581.2],[175.1,582.8],[174.7,587.3],[174.6,588.9],[174.2,593.7],[174.1,594.7],[172.9,607.3],[172.9,607.5],[172.6,611.0],[172.3,614.4],[172.2,615.5],[171.2,625.8],[171.2,626.2],[170.7,632.0],[170.4,635.2],[169.4,646.3],[169.2,647.5],[168.9,651.0],[168.6,654.0],[168.1,659.9],[168.0,660.8],[167.2,669.8],[167.0,671.3],[166.4,678.4],[165.9,683.8],[165.8,684.8],[165.0,693.8],[164.9,695.1],[164.4,700.2],[164.2,702.5],[163.6,708.6],[163.4,710.8],[162.4,721.5],[162.1,724.8],[161.6,730.3],[161.6,730.6],[161.5,731.5],[161.0,737.0],[160.4,743.4],[160.0,748.0],[159.9,748.8],[159.4,754.2],[158.9,759.7],[158.5,764.0],[158.3,765.9],[157.8,772.2],[157.6,773.7],[156.9,781.2],[156.9,782.0],[156.2,788.9],[155.9,792.2],[155.3,798.8],[155.2,800.0],[154.8,804.0],[154.4,809.1],[154.1,812.7],[153.4,820.3],[153.0,824.1],[152.9,824.5],[152.5,829.5],[152.2,832.3],[151.3,841.4],[151.1,843.5],[150.5,850.0],[150.2,852.7],[149.8,856.2],[149.7,857.5],[149.0,863.6],[147.7,873.0],[146.0,881.7],[145.6,883.7],[144.9,886.5],[143.8,889.7],[143.7,889.9],[142.9,892.4],[141.5,895.7],[140.3,898.2],[138.5,901.1],[137.8,902.0],[136.4,903.8],[135.6,904.6],[133.4,906.8],[131.2,908.5],[130.1,909.3],[129.1,909.9],[125.4,911.8],[124.2,912.3],[120.2,913.4],[119.4,913.6],[115.6,914.1],[113.3,914.2],[110.3,914.0],[109.4,913.9],[108.0,913.7],[104.5,913.0],[100.0,911.6],[97.9,910.8],[92.8,908.3],[90.6,907.0],[90.2,906.8],[84.2,902.4],[82.6,901.0],[81.2,899.6],[78.2,896.5],[77.3,895.5],[73.8,891.2],[72.8,889.7],[69.5,884.5],[68.5,882.8],[66.9,879.9],[65.9,877.7],[65.8,877.4],[62.8,870.2],[62.2,868.6],[61.3,865.9],[60.1,861.7],[58.3,854.8],[57.6,851.5],[57.4,850.3],[55.9,838.4],[55.7,836.5],[55.3,831.1],[55.3,828.1],[55.0,820.1],[55.0,815.9],[55.0,809.7],[55.0,805.7],[55.1,800.6],[55.2,794.3],[55.4,788.3],[55.7,780.0],[55.7,779.3],[56.1,770.8],[56.1,770.5],[56.6,761.6],[56.9,756.5],[57.1,753.7],[57.3,752.1],[58.1,739.4],[58.4,736.3],[58.7,731.7],[58.8,730.3],[59.1,727.2],[59.5,722.4],[59.6,720.4]],"pitLane":[[174.8,586.8],[179.5,590.0],[183.0,592.9],[186.3,595.7],[189.5,598.4],[192.7,601.0],[195.8,603.5],[198.9,606.0],[201.8,608.4],[204.7,610.7],[207.5,613.0],[210.2,615.2],[212.9,617.5],[215.5,619.6],[218.0,621.8],[220.4,623.9],[222.8,626.1],[225.1,628.2],[227.3,630.4],[229.4,632.5],[231.5,634.7],[233.5,637.0],[235.4,639.2],[237.3,641.5],[239.1,643.9],[240.8,646.3],[242.4,648.8],[244.0,651.4],[245.5,654.0],[246.9,656.8],[248.3,659.6],[249.5,662.6],[250.8,665.7],[251.9,668.8],[253.0,672.2],[254.0,675.6],[254.9,679.2],[255.8,683.0],[256.6,686.9],[257.3,690.9],[258.0,695.2],[258.6,699.6],[259.1,704.2],[259.5,708.9],[259.9,713.7],[260.2,718.6],[260.4,723.5],[260.5,728.5],[260.5,733.6],[260.5,738.6],[260.4,743.7],[260.1,748.7],[259.8,753.7],[259.4,758.6],[258.8,763.4],[258.2,768.1],[257.5,772.7],[256.6,777.1],[255.7,781.3],[254.6,785.4],[253.4,789.2],[252.2,792.9],[250.8,796.3],[249.3,799.5],[247.6,802.6],[245.9,805.5],[244.1,808.1],[242.2,810.7],[240.2,813.1],[238.2,815.3],[236.0,817.4],[233.8,819.3],[231.4,821.1],[229.1,822.8],[226.6,824.4],[224.1,825.9],[221.5,827.4],[218.8,828.7],[216.1,829.9],[213.3,831.1],[210.5,832.2],[207.6,833.3],[204.7,834.3],[201.7,835.3],[198.7,836.2],[195.7,837.2],[192.6,838.1],[189.5,839.0],[186.4,839.9],[183.2,840.9],[180.1,841.8],[176.9,842.8],[173.7,843.8],[170.5,844.9],[167.3,846.0],[164.1,847.2],[160.8,848.4],[157.6,849.7],[154.4,851.1],[150.2,852.5]],"pitEntryProgress":0.7418,"pitExitProgress":0.8629,"pitBox":{"x":256.3,"y":723.1,"w":59.9,"h":36.3},"startFinish":{"x":59.6,"y":720.4},"trackLengthCm":2200.6};
 
-  /* ============================== SPEAKER SCRIPT ============================== */
+  /* ============================== SPEAKER SCRIPT ==============================
+     Word-for-word. Read the second string out loud, top to bottom. The first
+     string is the stage cue (who speaks, what is on screen). Target ~15 min. */
   var SCRIPT = {
-    1:['FIONA · Set the frame in fifteen seconds.','Course, supervisor, team, one-line pitch. Do not read the fact list out loud. It is there for the audience to skim. Say: "This is a 1/10-scale autonomous racer that manages its own battery, tires and fuel, and decides for itself when to pit."'],
-    2:['FIONA · The promise of the whole talk.','Land the first line and pause. Then: most small autonomous racers pretend their hardware is infinite: infinite battery, infinite tires, infinite fuel. Ours is the opposite. That one design choice is the entire project.'],
-    3:['FIONA · Say nothing for the first twelve seconds.','Let Monza run. Near the end: "Every one of those cars will stop at least once. The race is decided by when." Then move on. Do not analyse the clip.'],
-    4:['FIONA · The table of contents, disguised as a picture.','Three resources, three clocks. Point out the difference that matters: battery is genuinely measured on the car; tires and fuel are computed models, and say so now, unprompted. Whichever clock hits zero first owns the race. The strip at the bottom will keep counting for the rest of the talk.'],
-    5:['FIONA · Walk the six parts as they light up, do not read the labels verbatim.','Camera sees, Nano thinks, INA219 and TB6612 sense and drive, the LiPo pack is the resource being managed, the motor turns throttle into fuel burn, the servo\'s angle is what tire wear caps. One board, one battery, one camera: every strategic decision happens on this chassis while it drives.'],
-    6:['FIONA · The slide that corrects the report.','One frame, three independent answers. Steering is learned: we drove the track and labelled the ideal aim point ourselves. Person detection is YOLOv5, with the 2-frame confirm and 5-frame clear so a single noisy frame cannot stop the car. Markers are plain colour detection, not a learned detector.'],
-    7:['GANG-YUN · Handover from Fiona.','Act one. The battery is the only resource we can actually measure, so this is where the strategy is real, not modelled.'],
-    8:['GANG-YUN · Walk the four steps slowly.','Measure, average, project, subtract the margin. Note the two design choices worth defending: only the last five laps count, because a lap driven ten laps ago in different conditions is not evidence; and the 5 % reserve exists so the car never dies on track, where recovery is manual.'],
-    9:['GANG-YUN · The first climax. Then stop talking.','Thirty-five percent in the pack. Four laps left at eight percent each is thirty-two, plus the five percent reserve is thirty-seven. Thirty-five is less than thirty-seven. Box. Then hold for three seconds and let the stamp sit there.'],
-    10:['GANG-YUN · Straight into act two, no handover.','Tires are the resource we cannot measure at this scale, so we have to infer them, and be honest about what that means.'],
-    11:['GANG-YUN · Say the honest part before anyone asks.','There is no tire sensor on a 1/10-scale car. We charge wear for cornering, not for speed alone, because that is what actually destroys a tire. The constant is hand-tuned from watching handling degrade over test laps. It is not bench-calibrated, and the badge says so.'],
-    12:['KATRIN · Handover from Gang-Yun.','The best cyber-physical moment in the deck. Someone taps a button on a phone. That message travels through a broker to the car, flips one flag, and the car physically caps its own throttle at about a third of dry speed. Nothing else in the code changed. A message changed what the machine is allowed to do. That is the whole course, in one command.'],
-    13:['KELLY · Handover from Katrin.','Act three. Fuel is the strange one: the only resource whose disappearance is partly good news.'],
-    14:['KELLY · Keep it short and let the bars do the work.','Fuel burns with throttle. As it burns, the simulated car gets lighter, and a lighter car can accelerate harder. So this clock running down makes the car faster, which is exactly why real strategy is not simply "stop as late as possible".'],
-    15:['KELLY · The payoff. Two minutes. Do not rush.','The planner obeys the smallest clock. If a second clock runs out within two laps of the first, it is served in the same stop: one visit, both jobs, because stopping twice costs more time than it saves. Then the state machine: seeing the green marker is not enough on its own; the car only turns in if it has already decided to box. And over all of it sits the safety override, which cannot be outvoted.'],
-    16:['KATRIN · Handover from Kelly, back to telemetry.','The car and the phone never talk to each other directly. A broker on a local hotspot sits in between, so either side can disappear without breaking the other. Two transports on purpose. Roughly eighty milliseconds per-stage against a hundred millisecond target, and the badge is honest that this is a stage-by-stage estimate, not one end-to-end measurement.'],
-    17:['KATRIN · Twenty seconds of silence, then narrate the beats.','Rain arriving. Grip falling. The tire clock collapsing. The pit window opening. The dive into the pit lane, ten seconds of service, and the rejoin. Say nothing else.'],
-    18:['KATRIN · Be honest, then land the line.','Left column runs on the real car today. Right column is specified and simulated but not yet closed into the control loop. Say that plainly, it is a strength not a weakness. Then read the closing line once, slowly, and stop.'],
-    19:['Backup · track geometry.','Six hundred and twenty-seven centreline points extracted from the track drawing, 22.01 m per lap. The pit lane joins at 74 % and rejoins at 86 % of the lap.'],
-    20:['Backup · who did what.','Three workstreams, seven people.'],
-    21:['Backup · full hardware list.','Everything on the car, if someone asks for the rest of the spec.'],
-    22:['Backup · code organisation.','One JupyterLab notebook, seven cells, running on the Nano.'],
-    23:['Backup · raw footage.','Unedited driving clips, for Q&A if someone wants to see more track time than the sim demo shows.']
+    1:['FIONA · Title slide. Warm, confident open.','Good afternoon, everyone. We are the Pit-Stop Racer Pro team, and for the next fifteen minutes we want to show you a little racing car that thinks for itself. It is a one-tenth-scale autonomous racer, and here is the one thing that makes it special: it manages its own battery, its own tires and its own fuel, and it decides, entirely on its own, when to come in for a pit stop. No driver. No remote control. Just the car, watching its own resources, and making the call.'],
+    2:['FIONA · The premise. Land the first line, then pause.','Let me start with the idea that the whole project is built on. Most small self-driving cars pretend their hardware lasts forever. Infinite battery. Infinite grip. Infinite fuel. They just drive until someone unplugs them. Ours does the opposite. Our car assumes everything is running out, all the time, exactly like a real race car. And once you accept that, the interesting question stops being "how fast can it go", and becomes "how long can it stay out before it has to stop". That single question is the entire talk.'],
+    3:['FIONA · Monza video plays with sound. Stay quiet ~10s, then speak over the end.','Watch this for a second. This is the start of a real Formula One race at Monza. Twenty cars, all ridiculously fast, all within a tenth of a second of each other. And here is the secret that television never tells you: not one of these cars can finish without stopping. Every single one of them will come into the pit lane at least once. So the race you are watching is not really won by the fastest car. It is won by the team that picks the best moment to stop. That is the game we taught our little car to play.'],
+    4:['FIONA · Cut to our own car (hero lap). Let it drive ~4s, then speak.','And this is ours. No cuts, no help, this is the actual car on a track we taped down ourselves on the floor. The camera on the front finds the racing line, and the car just drives it. Same problem as Monza, one-tenth the size. It is quick, it is smooth, and every second it is out there, it is quietly burning through the three things it needs to keep going. So let me show you those three things.'],
+    5:['FIONA · Three clocks slide. Point at each ring as you name it.','Think of the car as running three countdown clocks at once. The first is the battery, and this one is special, because it is the only clock we can actually measure with a real sensor on the car. The second is the tires, which slowly wear out as it corners. The third is the fuel, which burns as it drives. Now, be honest with a technical audience: the tires and the fuel are computed models, not physical sensors, and you will see us label them clearly as we go. Whichever of these three clocks hits zero first is the one that forces the car into the pits. The rest of this talk is simply those three clocks, one at a time.'],
+    6:['FIONA · Anatomy slide. The car diagram draws itself; gesture along it.','Before the strategy, thirty seconds on what is actually bolted to this thing, because it is a surprisingly small amount of hardware. There is one camera on the nose, and that single camera does everything: it finds the track, it spots the pit markers, and it sees people. There is a small computer, an Nvidia Jetson, doing all the thinking. There is one sensor on the power line that reads the real battery. And there are two little chips that turn all of that into steering and throttle. That is basically it. One camera, one brain, one battery, and every decision you are about to see happens right here on the car while it is moving.'],
+    7:['FIONA · Perception slide. Three boxes appear one by one.','So what does that one camera frame actually become? Three completely separate answers, sixty-five times a second. First: where do I steer? A small neural network looks at the track ahead and picks one point, the spot to aim for. We trained it the fun way, by driving the track ourselves and showing it where we would look. Second: is anyone in the way? A detector called YOLO scans the very same frame for people. If it sees a person two frames in a row, the car stops and reverses, and this rule beats every other rule on the car. We tested it forty times, walking into its path, and it caught the person all forty times. And third: where am I on the lap? For that we just look for two coloured strips of tape, green for the pit entry, blue for the start-finish line. Simple, and it never gets confused.'],
+    8:['GANG-YUN · Act I card: BATTERY. Take the handover clearly.','Thank you, Fiona. I am going to take the first clock, the battery, and this is my favourite one, because the battery is the only resource we do not have to guess. There is a real sensor on the car reading it. So here, the strategy is not a simulation. It is the real thing.'],
+    9:['GANG-YUN · Battery math slide. Walk the four numbers slowly.','Here is exactly how the car works out how many laps it has left, and it is beautifully simple. Every time it crosses the start-finish line, it checks the battery and asks, "how much did that last lap cost me?" Then it takes the average of the last five laps, so one weird lap does not throw it off. Say each lap costs about eight percent. If the pack is sitting at forty-one percent, then forty-one divided by eight is about five laps. But we never run it to zero, that would leave the car dead in the middle of the track, so we hold back a five-percent safety cushion. And that gives us the real number: about four and a half laps left. Measure, average, project, keep a little in reserve. That is the whole method.'],
+    10:['GANG-YUN · The verdict + pit video. Deliver the decision, then point at the clip.','Now the moment of truth. Let us say there are four laps to the finish, and the pack is down to thirty-five percent. Four laps at eight percent each is thirty-two percent, plus our five-percent cushion, that is thirty-seven percent we would need. But we only have thirty-five. Thirty-five is less than thirty-seven. So the car says, out loud, in its own logic: box. Come in. And look, on the right, that is it actually happening. The car decided by itself, drove itself into the pit box, parked on the green marker, and started charging. The app shows the mode flip to CHARGING and the battery climbing back up. Nobody touched it. It made the call and it acted on it.'],
+    11:['GANG-YUN · Act II card: TIRES. Shift tone, this one is harder.','Second clock: the tires. And now I have to be honest with you, because this one is genuinely harder. There is no such thing as a tire-wear sensor on a car this small. It does not exist. So if we want a tire clock, we have to build it ourselves, out of what the car is already doing.'],
+    12:['GANG-YUN · Tires slide + curve video. Gesture at the corner clip.','Here is the trick, and it is the same physics as a real car. Tires do not wear out from going fast in a straight line, they wear out from cornering. So the car watches how hard and how fast it is turning, and every corner it takes, it charges a little bit of wear. Watch the clip, every time it leans into that curve, that is a moment we count against the tires. We even track all four separately, and the outside front wears fastest, exactly like the real thing. When any tire drops below twenty-five percent, we call it done and force a stop, no matter what the battery says. Now, this is a hand-tuned model, and we are the first to say so, that badge is there on purpose. But it behaves like real rubber, and that is what matters for the strategy.'],
+    13:['KATRIN · Rain slide + rain video. This is the showpiece. Enjoy it.','Thank you, Gang-Yun. I want to show you my favourite moment in the whole project, because this is where the software world and the physical world touch. Watch. Someone, a human, taps a single button on a phone that says "Rain". That tap becomes a tiny message. It travels over Wi-Fi, through a little server, and onto the car. And on the very next camera frame, the car quietly caps its own top speed to about a third of normal, because the track is now "wet". Look at the clip, the app flips to RAIN ON, and the car slows itself down. We changed nothing in the code. We sent one message, and it changed what the machine is physically allowed to do. That, for me, is the whole point of a cyber-physical system, in one button press.'],
+    14:['KELLY · Act III card: FUEL. Take the handover, a little playful.','Thanks, Katrin. I get the third and strangest clock: the fuel. Strange, because this is the one resource where running low is actually good news. Let me explain what I mean.'],
+    15:['KELLY · Fuel slide. Let the see-saw bars do the work.','Fuel burns in proportion to how hard you push the throttle, just like a real engine. Flat out, it drains fast; cruising, it barely moves. But here is the twist. As the fuel burns off, the car gets lighter. And a lighter car can accelerate harder and corner better. So this clock counting down actually makes the car quicker as it empties. That is why real race strategy is never just "stop as late as possible", sometimes a lighter, faster car earns back more time than the pit stop costs. Our car understands that trade-off, and it factors it in.'],
+    16:['KELLY · The call slide. The climax. Slow down, do not rush.','So now put all three clocks in one place, because this is where it all comes together. The car is watching battery, tires and fuel at the same time, and each one is shouting a different deadline. The rule it follows is simple and smart: obey the clock that runs out first. But, and this is the clever part, if a second clock is going to run out within a lap or two of the first, it does both jobs in the same stop, because stopping twice always costs more than it saves. And sitting on top of everything, untouchable, is the safety rule: if a person steps in front of the car, it stops, full stop, no matter what the strategy wants. One car, three deadlines, one pit lane, and it sorts the whole thing out by itself.'],
+    17:['KATRIN · Telemetry slide + driving video. Point at the live numbers.','Thanks, Kelly. Now, how do we, the humans, see any of this? The car and the phone never actually talk to each other directly. Instead there is a little post office in the middle, a message broker, and both sides just leave messages there. That means either one can drop off Wi-Fi and nothing breaks. Watch the clip: the car is driving, and every number on that phone, speed, battery, fuel, all four tires, the mode, is arriving live, a fraction of a second after it happens on the car. Start to finish, the whole loop runs in well under a tenth of a second, which is fast enough for a person on the pit wall to react in real time.'],
+    18:['KATRIN · App slide + charging video (starts mid-stop). Sell the dashboard.','And this is what it looks like in your hand during an actual pit stop. This is the live app, and right now the car is on charge, you can see the mode says CHARGING and the battery is ticking upward in real time. Every tile you see, the speed, the fuel, each tire, is a message the car sent a heartbeat ago. And I want to be really clear about one thing: the phone is not driving the car and it did not order this stop. The car decided to pit all by itself. The app is simply the window we watch it through. It is the entire pit wall, shrunk down to fit in your pocket.'],
+    19:['KATRIN · Race sim slide. Stay quiet ~15s, then narrate softly.','Let me pull it all together in one simulated lap, with everything switched on at once. Just watch for a moment. ... There, the rain arrives, and the grip drops. ... The tire clock collapses. ... The pit window opens up. ... And the car dives into the pit lane, takes its service, and rejoins. Three clocks, all fighting each other, and the car resolving the whole argument on its own, in real time, without a single human input.'],
+    20:['KATRIN · Close slide. Be honest, then land the last line and stop.','So, to be straight with you about where we are: the perception, the driving, the battery strategy and the whole app, that all runs on the real car today, exactly as you have seen it. The tire and fuel models are built and simulated, and the next step is closing them fully into the live control loop. We think that honesty is a strength, not a weakness. Because what we have built is a tiny car that treats every lap like a real race: it knows what it is spending, it knows when it will run out, and it decides for itself when to pit. Thank you very much, we would love to take your questions.'],
+    21:['BACKUP · Track geometry. Only if asked.','Quick answer: the digital twin is the real track. We pulled six hundred and twenty-seven points off our own track drawing to build the centreline, it works out to about twenty-two metres a lap, and the pit lane joins on at roughly three-quarter distance. The photo there is a second track layout we also built and drove on.'],
+    22:['BACKUP · Team. Only if asked.','Three teams, seven of us. One team on perception and driving, one on the resource strategy and the pit-stop logic, and one on the telemetry and the phone app.'],
+    23:['BACKUP · Full hardware list. Only if asked.','Happy to go deeper: it is a Jetson Nano for compute, a single CSI camera at sixty-five frames a second, an INA219 sensor reading the real battery, a small dual H-bridge driving the motor and steering, and a two-cell lithium pack.'],
+    24:['BACKUP · Code organisation. Only if asked.','It is all one notebook on the car, organised into seven cells: setup, perception, safety, resources, strategy, telemetry, and the main loop that ties it together at camera speed.'],
+    25:['BACKUP · Raw footage reel. Only if asked.','And if you just want to see more of the car driving, these are raw, unedited clips from our test sessions. Each one plays on a click.']
   };
 
   /* ============================== BOOT ============================== */
@@ -1690,13 +1761,15 @@
       raf=requestAnimationFrame(loop);
     }
     return {
-      show:function(){ el.classList.add('on'); stage.classList.add('rail-on'); if(!running){ running=true; last=0; raf=requestAnimationFrame(loop); } paint(); },
+      /* clock rail removed from the deck: keep the value model alive (the HUD
+         still reads RAIL.value(...)), but never render the bottom bars. */
+      show:function(){ if(!running){ running=true; last=0; raf=requestAnimationFrame(loop); } },
       hide:function(){ el.classList.remove('on'); stage.classList.remove('rail-on'); },
       stop:function(){ running=false; cancelAnimationFrame(raf); raf=0; },
-      focus:function(k){ Object.keys(segs).forEach(function(s){ segs[s].classList.toggle('hot', k==='all'||s===k); }); },
-      set:function(k,v){ DEF[k].v0=v+DEF[k].r*elapsed; paint(); },
-      zeroBattery:function(){ battZero=true; paint(); },
-      pulse:function(k){ var s=segs[k]; s.classList.remove('pulse'); void s.offsetWidth; s.classList.add('pulse'); setTimeout(function(){s.classList.remove('pulse');},1000); },
+      focus:function(k){},
+      set:function(k,v){ DEF[k].v0=v+DEF[k].r*elapsed; },
+      zeroBattery:function(){ battZero=true; },
+      pulse:function(k){},
       value:function(k){ return val(k); }
     };
   })();
@@ -1900,9 +1973,9 @@
   stepHooks.p12=function(st){
     var bar=document.getElementById('thrbar'), v=document.getElementById('thrval');
     if(!bar) return;
-    bar.classList.toggle('wet',st>=4);
-    bar.querySelector('i').style.width=(st>=4?35:100)+'%';
-    v.textContent=(st>=4?'0.07':'0.20');
+    bar.classList.toggle('wet',st>=3);
+    bar.querySelector('i').style.width=(st>=3?35:100)+'%';
+    v.textContent=(st>=3?'0.07':'0.20');
   };
 
   /* 14 - mass down, acceleration up */
@@ -2070,7 +2143,7 @@
     p11:function(){ HUD.wet(false); HUD.set('Tires · laps',RAIL.value('tire').toFixed(1)); RAIL.focus('tire'); },
     p12:function(st){
       RAIL.focus('tire');
-      if(st>=4){ HUD.wet(true); HUD.set('Max throttle','0.07'); if(!done.s12r){ done.s12r=1; RAIL.set('tire',2.1); RAIL.pulse('tire'); } }
+      if(st>=3){ HUD.wet(true); HUD.set('Max throttle','0.07'); if(!done.s12r){ done.s12r=1; RAIL.set('tire',2.1); RAIL.pulse('tire'); } }
       else { HUD.wet(false); HUD.set('Max throttle','0.20'); }
     },
     p13:function(){ HUD.wet(true); HUD.set('Fuel · laps',RAIL.value('fuel').toFixed(1)); RAIL.focus('fuel'); },
@@ -2101,15 +2174,49 @@
   }
 
   /* ============================== ENGINE ============================== */
+  /* auto-play any video marked data-auto on the slide we land on, pause + rewind
+     every video on the slide we leave. Honours:
+       data-rate  = playback speed (e.g. 1.4 = 40% faster)
+       data-start = seconds to skip from the front; the clip loops back here too. */
+  function vstart(v){ return parseFloat(v.getAttribute('data-start'))||0; }
+  function autoVideos(i,playing){
+    var s=slides[i]; if(!s) return;
+    [].forEach.call(s.querySelectorAll('video[data-auto]'),function(v){
+      if(playing){
+        var rate=parseFloat(v.getAttribute('data-rate'))||1;
+        var st=vstart(v);
+        if(!v.__trimWired){
+          v.__trimWired=1;
+          v.addEventListener('timeupdate',function(){
+            var s0=vstart(v);
+            if(s0>0 && v.currentTime < s0-0.05){ try{v.currentTime=s0;}catch(e){} }
+          });
+          v.addEventListener('seeked',function(){ try{v.playbackRate=parseFloat(v.getAttribute('data-rate'))||1;}catch(e){} });
+        }
+        try{v.currentTime=st;}catch(e){}
+        try{v.playbackRate=rate;}catch(e){}
+        var pp=v.play(); if(pp&&pp.catch) pp.catch(function(){});
+        try{v.playbackRate=rate;}catch(e){}
+      }
+      else { v.pause(); try{v.currentTime=vstart(v);}catch(e){} }
+    });
+  }
+  /* any video with data-rate (including the click-play backup reel) keeps its
+     speed even when the user starts it by hand. */
+  document.addEventListener('play',function(e){
+    var v=e.target; if(v&&v.tagName==='VIDEO'&&v.getAttribute('data-rate')){
+      try{v.playbackRate=parseFloat(v.getAttribute('data-rate'))||1;}catch(err){}
+    }
+  },true);
   function onEnter(i){
     var id=slides[i].id;
     if(id==='p01') coldOpen();
-    if(id==='svid'){ var mv=document.getElementById('vid-monza'); if(mv){ try{mv.currentTime=0;}catch(e){} var pp=mv.play(); if(pp&&pp.catch) pp.catch(function(){}); } }
+    autoVideos(i,true);
     if(enterHooks[id]) enterHooks[id]();
   }
   function onLeave(i){
     var id=slides[i].id;
-    if(id==='svid'){ var mv=document.getElementById('vid-monza'); if(mv) mv.pause(); }
+    autoVideos(i,false);
     if(leaveHooks[id]) leaveHooks[id]();
   }
   function renderSteps(){
@@ -2146,7 +2253,7 @@
     if(i>=0){ go(i); step=maxStep(); renderSteps(); updateChrome(); }
   }
 
-  var acts=[{n:'The race',a:1,b:6},{n:'Battery',a:7,b:9},{n:'Tires',a:10,b:12},{n:'Fuel',a:13,b:14},{n:'The call',a:15,b:16},{n:'Close',a:17,b:18}];
+  var acts=[{n:'The race',a:1,b:7},{n:'Battery',a:8,b:10},{n:'Tires',a:11,b:13},{n:'Fuel',a:14,b:15},{n:'The call',a:16,b:18},{n:'Close',a:19,b:20}];
   function updateChrome(){
     var human=cur+1, isBk=!!slides[cur].dataset.backup;
     document.getElementById('f-section').textContent=slides[cur].dataset.section;
@@ -2174,7 +2281,7 @@
   });
 
   /* ============================== REHEARSAL TIMER ============================== */
-  var TARGET=[35,25,32,55,50,45,12,80,65,12,55,70,12,50,130,60,50,54];
+  var TARGET=[41,41,46,36,53,51,67,26,61,56,27,64,61,16,45,61,53,52,34,51];
   var tEl=document.getElementById('timer'), tOn=false, tStart=0, tSlide=0, tRaf;
   function mmss(s){ s=Math.max(0,Math.round(s)); return (s/60|0)+':'+('0'+(s%60)).slice(-2); }
   function markSlide(){ tSlide=performance.now(); }
@@ -2185,7 +2292,7 @@
     var upto=0; for(var i=0;i<cur&&i<TARGET.length;i++) upto+=TARGET[i];
     var tgt=TARGET[cur]||0, delta=total-(upto+Math.min(slide,tgt));
     tEl.innerHTML='slide '+(cur+1)+' &nbsp;<b>'+mmss(slide)+'</b> / '+mmss(tgt)+'<br>'+
-      'total &nbsp;<b>'+mmss(total)+'</b> / 14:52<br>'+
+      'total &nbsp;<b>'+mmss(total)+'</b> / 15:42<br>'+
       '<span class="'+(slide>tgt?'over':'ok')+'">'+(slide>tgt?'over by '+mmss(slide-tgt):'on target')+'</span>';
     tRaf=requestAnimationFrame(tickTimer);
   }

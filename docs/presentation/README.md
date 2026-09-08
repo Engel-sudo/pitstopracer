@@ -1,10 +1,36 @@
 # Presentation deck
 
 `pitstop-deck.html`: the course presentation for Pit-Stop Racer Pro.
-Single self-contained HTML file: **18 slides + 4 backup slides**, dark "Pit Wall"
-F1-telemetry style, built as one 15-minute story.
-Slide 3 plays `monza-start.mp4` (a 17 s F1 race-start clip); keep that file next
-to the HTML. Everything else is embedded.
+Single self-contained HTML file: **20 slides + 5 backup slides**, dark "Pit Wall"
+F1-telemetry style, built as one ~15-minute story.
+
+`pitstop-speaker-script.pdf`: the full **word-for-word** speaker script (what to
+read out loud, per slide, with speaker tags and stage cues). Regenerate it from
+the deck with the steps in "The script PDF" below.
+
+Media that must sit next to the HTML:
+
+- `monza-start.mp4` — slide 3, a 17 s F1 race-start clip (2020 Italian GP), plays at 1.5x.
+- `real-drive-oval.mp4` — slide 4, our own JetRacer hero lap (full-bleed), 1.4x.
+- `real-pitstop-charging.mp4` — slide 10 (verdict) and slide 18 (the app); on 18 it
+  starts 10 s in via `data-start`, focused on the CHARGING interaction.
+- `real-curve.mp4` — slide 12, cornering = tire wear.
+- `real-rain-command.mp4` — slide 13, Rain button flips the speed limit live.
+- `real-telemetry.mp4` — slide 17, car driving while the phone streams the numbers.
+- `real-map2.jpg` — backup slide `b01`, a second hand-built track layout.
+- `real-drive-oval.mp4`, `real-curve.mp4`, `real-drive-long.mp4`,
+  `real-drive-follow.mp4` — backup reel `b05`.
+
+All clips except Monza are muted and loop. Every clip tagged `data-auto`
+auto-plays on slide entry and rewinds on leave; `data-rate` sets its speed
+(Monza 1.5x, the rest ~1.35–1.4x) and `data-start` trims seconds off the front.
+The backup reel (`b05`) clips play on click and keep their speed. Everything else
+is embedded in the HTML.
+
+There is **no clock rail** any more: the old persistent BATTERY / TIRES / FUEL
+bars along the bottom were removed because they overlapped slide content. The
+`RAIL` object still exists in JS (the HUD reads its projected values) but never
+renders.
 
 `pitstop-deck-v1.html` is the previous 29-slide deck. It is **not** dead weight:
 the build script reads the shared design system, the JetRacer photos, the track
@@ -21,7 +47,7 @@ No build step, no server.
 | `←` / `PageUp` | back |
 | `S` | toggle the speaker script (talking points per slide) |
 | `O` | slide overview grid, click any slide to jump |
-| `T` | rehearsal timer (slide elapsed, total, 14:52 target, over-by) |
+| `T` | rehearsal timer (slide elapsed, total, 15:42 target, over-by) |
 | `F` | fullscreen |
 | `Home` / `End` | first / last slide |
 
@@ -37,23 +63,25 @@ Three acts, one question: *the car is fast, but how long can it stay out?*
 | 1 | Title | — | 0 |
 | 2 | The premise: the best-managed car wins | — | 2 |
 | 3 | Monza race start (video) | — | 1 |
-| 4 | Three clocks: battery, tires, fuel | — | 3 |
-| 5 | Anatomy (JetRacer hardware) | — | 6 |
-| 6 | Perception: steering, people, markers | — | 4 |
-| 7 | **Act I card: Battery** | I | 1 |
-| 8 | How many laps are left in the pack? | I | 5 |
-| 9 | The verdict: 35 < 37 → BOX | I | 4 |
-| 10 | **Act II card: Tires** | II | 1 |
-| 11 | Tires: wear you cannot measure | II | 3 |
-| 12 | Rain: a phone changes the speed limit | II | 4 |
-| 13 | **Act III card: Fuel** | III | 1 |
-| 14 | Fuel: the see-saw | III | 3 |
-| 15 | The call: one car, three deadlines, one pit lane | III | 6 |
-| 16 | Telemetry: the car races, the phone watches | III | 5 |
-| 17 | Race sim: one lap with everything on | — | 1 |
-| 18 | What's built, and where this grows next + close | — | 3 |
+| 4 | Our car: real JetRacer hero lap (video) | — | 1 |
+| 5 | Three clocks: battery, tires, fuel | — | 3 |
+| 6 | Anatomy (JetRacer hardware) | — | 6 |
+| 7 | Perception: steering, people, markers | — | 4 |
+| 8 | **Act I card: Battery** | I | 1 |
+| 9 | How many laps are left in the pack? | I | 5 |
+| 10 | The verdict: 35 < 37 → BOX (+ real pit clip) | I | 4 |
+| 11 | **Act II card: Tires** | II | 1 |
+| 12 | Tires: wear you cannot measure (+ curve clip) | II | 3 |
+| 13 | Rain: a phone changes the speed limit (+ real clip) | II | 3 |
+| 14 | **Act III card: Fuel** | III | 1 |
+| 15 | Fuel: the see-saw | III | 3 |
+| 16 | The call: one car, three deadlines, one pit lane | III | 6 |
+| 17 | Telemetry: the car races, the phone watches (+ real clip) | III | 4 |
+| 18 | The app during a pit stop (+ charging clip, Katrin) | III | 3 |
+| 19 | Race sim: one lap with everything on | — | 1 |
+| 20 | What's built, and where this grows next + close | — | 3 |
 
-Backup slides `b01`–`b04` sit after slide 18. Arrow navigation **skips** them;
+Backup slides `b01`–`b05` sit after slide 20. Arrow navigation **skips** them;
 they only appear in the `O` overview (dimmed, tagged `BACKUP`) so you can jump
 to one during Q&A.
 
@@ -62,21 +90,23 @@ to one during Q&A.
 - **HUD** (top right): one number per slide, laps left, FPS, max throttle,
   latency. It morphs when the story changes it and counts digits when it is
   numeric.
-- **Clock rail** (above the footer): three live bars, BATTERY / TIRES / FUEL,
-  draining in wall-clock time from slide 4 onward. Battery is forced to `0.0`
-  when you reach slide 15, which is what makes the pit call unavoidable.
-- Both are idempotent: jumping straight to `#15` lands in the right state.
-- **Speaker split** (4 voices) is in the `S` script per slide.
+- **Clock rail** (the old BATTERY / TIRES / FUEL bars along the bottom) has been
+  **removed** because it overlapped slide content. The `RAIL` object still exists
+  in JS so the HUD can read its projected lap values, but it never renders and
+  reserves no space.
+- **Speaker split** (4 voices: Fiona, Gang-Yun, Kelly, Katrin) is in the `S`
+  script per slide, and in `pitstop-speaker-script.pdf`.
 
 ## What's in it
 
 - Content follows the partner's **General Summary** (the as-built system); the
   report is only used where the summary is silent.
-- The track on slides 15, 17 and the backups is rendered live from the real
+- The track on slides 16, 19 and the backups is rendered live from the real
   627-point Monza centreline (`app/src/track/monza.generated.ts`).
-- Slide 3 is a full-bleed `<video>` with sound. It auto-plays on entry and pauses
-  on leave; if the browser blocks autoplay-with-audio, click play (controls are
-  shown). Source: 2020 Italian GP, Formula 1.
+- Slide 3 is a full-bleed `<video>` with sound, played at 1.5x. It auto-plays on
+  entry and pauses on leave; if the browser blocks autoplay-with-audio, click play
+  (controls are shown). Source: 2020 Italian GP, Formula 1. Slide 4 is our own
+  JetRacer hero lap, muted and looping at 1.4x, so it plays without a prompt.
 - Tire and fuel models are shown in plain English with a permanent amber
   `SIMULATED · HAND-TUNED` badge; the latency figure carries
   `ESTIMATE · PER STAGE, NOT END-TO-END`. The maths stays in the report.
@@ -86,11 +116,18 @@ to one during Q&A.
 
 ## Editing
 
-`pitstop-deck.html` is **generated**. Do not edit it directly, regenerate:
+`pitstop-deck.html` was originally **generated** from a `_build/` source set. If
+that `_build/` directory is present, regenerate rather than hand-editing:
 
 ```
 cd docs/presentation && python3 _build/assemble.py
 ```
+
+> The real-footage pass (hero slide `shero`, the app slide `papp`, the in-slide
+> clips, the backup reel, video speed-ups, the removed clock rail, and the
+> `data-auto` / `data-rate` / `data-start` video engine) was applied **directly**
+> to `pitstop-deck.html`. If you regenerate from `_build/`, port those changes
+> back into the source parts first or they will be lost.
 
 | file | holds |
 |---|---|
@@ -104,13 +141,32 @@ Gotchas:
 
 - **Never give a new slide an id matching `s0`–`s27`.** The reused CSS block
   still carries the old deck's per-slide rules and they will silently win. New
-  slides use the `p01`–`p18` / `b01`–`b04` prefix; `svid` is reused on purpose.
+  slides use the `p01`–`p18` / `b01`–`b05` prefix; `svid`, `shero` are the two
+  full-bleed video slides and `papp` is the app/telemetry slide.
 - `SCRIPT` is keyed by slide **position** (1-based). Inserting a slide means
-  renumbering `SCRIPT`, `TARGET` and the `acts` ranges.
-- `data-steps="N"` on the section = click-reveals; `class="step" data-s="2"`
-  appears on step 2. `data-backup="1"` hides a slide from arrow navigation.
+  renumbering `SCRIPT`, `TARGET` and the `acts` ranges (as was done to add the
+  hero slide at position 4 and the app slide at position 18).
+- Video attributes: `data-auto` = play on enter / rewind on leave; `data-rate` =
+  playback speed; `data-start` = seconds trimmed off the front (also the loop-in
+  point). Drop `data-auto` for click-only clips (the `b05` reel).
+
+## The script PDF
+
+`pitstop-speaker-script.pdf` is the word-for-word script, generated from the
+`SCRIPT` object in the deck. To rebuild it after editing the script:
+
+```
+# 1. dump the SCRIPT entries to a printable HTML (see /tmp/script.html recipe),
+#    then render with headless Chrome (honours @page pagination):
+"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" \
+  --headless --disable-gpu --no-pdf-header-footer \
+  --print-to-pdf="pitstop-speaker-script.pdf" "file:///path/to/script.html"
+```
+
+The single source of truth for the words is the deck's `SCRIPT`; keep the PDF in
+sync when you change a line.
 
 ## Open items
 
 - Chair / lab name for the title slide, if the course wants one.
-- Rehearse against the `T` timer: the per-slide targets sum to 14:52.
+- Rehearse against the `T` timer: the per-slide targets sum to 15:42.
